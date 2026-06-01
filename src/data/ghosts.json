@@ -1,0 +1,935 @@
+{
+  "meta": {
+    "game": "Phasmophobia",
+    "version": "0.15.1.0",
+    "lastUpdated": "2026-01-01",
+    "totalGhosts": 27,
+    "notes": "Winter's Jest update added Dayan, Obambo, and Gallu"
+  },
+  "evidenceTypes": [
+    {
+      "id": "emf5",
+      "name": "EMF Level 5",
+      "description": "EMF reader spikes to level 5 near ghost interactions or locations",
+      "equipment": "EMF Reader"
+    },
+    {
+      "id": "spiritBox",
+      "name": "Spirit Box",
+      "description": "Ghost verbally responds to questions when spoken to in darkness",
+      "equipment": "Spirit Box"
+    },
+    {
+      "id": "ultraviolet",
+      "name": "Ultraviolet",
+      "description": "Fingerprints or footprints visible under UV light on doors, windows, or floors",
+      "equipment": "UV Flashlight or Glowstick"
+    },
+    {
+      "id": "ghostWriting",
+      "name": "Ghost Writing",
+      "description": "Ghost writes a message in a placed Ghost Writing Book",
+      "equipment": "Ghost Writing Book"
+    },
+    {
+      "id": "ghostOrb",
+      "name": "Ghost Orb",
+      "description": "Small floating orbs visible only through night-vision video camera feed",
+      "equipment": "Video Camera (with night vision)"
+    },
+    {
+      "id": "freezingTemps",
+      "name": "Freezing Temperatures",
+      "description": "Room temperature drops below 0°C / 32°F",
+      "equipment": "Thermometer"
+    },
+    {
+      "id": "dotsProjector",
+      "name": "D.O.T.S Projector",
+      "description": "Ghost silhouette briefly appears crawling through the laser grid",
+      "equipment": "D.O.T.S Projector"
+    }
+  ],
+  "ghosts": [
+    {
+      "id": "spirit",
+      "name": "Spirit",
+      "evidence": ["emf5", "spiritBox", "ghostWriting"],
+      "strength": "None — the Spirit is the most common ghost type",
+      "weakness": "Smudge sticks are extra effective, preventing hunts for 180 seconds instead of 90",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Smudge sticks prevent hunting for 180 seconds (double the normal 90 seconds)",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "No abnormal speed or interaction patterns — baseline ghost behavior",
+          "category": "general",
+          "identifyValue": "low"
+        }
+      ],
+      "identifyingClues": [
+        "Process of elimination — Spirit is confirmed when all other possibilities are ruled out",
+        "If smudging stops hunts for an unusually long time, it is likely a Spirit"
+      ]
+    },
+    {
+      "id": "wraith",
+      "name": "Wraith",
+      "evidence": ["emf5", "spiritBox", "dotsProjector"],
+      "strength": "Does not leave UV footprints in salt — nearly impossible to track physically",
+      "weakness": "Stepping near salt generates only EMF 2 instead of the normal EMF 3, revealing its presence",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Does NOT step in salt — will not leave footprints when passing through a salt pile",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Generates EMF 2 (not 3) at salt pile locations when it passes through them",
+          "category": "evidence",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Can teleport directly to a random player's location, generating EMF 2 at the destination",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Salt near ghost room shows no footprints despite ghost activity",
+        "Salt pile shows EMF 2 reading but no UV footprints",
+        "Ghost appears in unexpected locations far from its room without walking"
+      ]
+    },
+    {
+      "id": "phantom",
+      "name": "Phantom",
+      "evidence": ["spiritBox", "ultraviolet", "dotsProjector"],
+      "strength": "Causes greater sanity loss when players look at it during a ghost event",
+      "weakness": "Taking a photo of the Phantom during an event causes it to temporarily disappear (become invisible)",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Taking a photo of the Phantom during a ghost event causes it to vanish — photo is still credited",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Slows to 0.5× its normal speed when a player looks directly at it during a hunt",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Drains player sanity at a faster rate when the player is looking at it",
+          "category": "sanity",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Blinks in and out of visibility more frequently than other ghosts during hunts",
+          "category": "hunt",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost disappears when photographed during an event",
+        "Ghost slows noticeably when player makes eye contact during a hunt",
+        "Unusually fast sanity drain when watching ghost events"
+      ]
+    },
+    {
+      "id": "poltergeist",
+      "name": "Poltergeist",
+      "evidence": ["spiritBox", "ultraviolet", "ghostWriting"],
+      "strength": "Can throw multiple objects simultaneously in a wide radius",
+      "weakness": "Has reduced power in empty rooms with no throwable objects",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Can throw multiple objects at once in a radius around itself",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Throws objects with significantly more force and frequency than any other ghost",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Each thrown object drains 2% sanity from nearby players",
+          "category": "sanity",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Multiple objects flying across the room simultaneously",
+        "Objects thrown great distances with unusual force",
+        "Very high interaction count with environment objects"
+      ]
+    },
+    {
+      "id": "banshee",
+      "name": "Banshee",
+      "evidence": ["ultraviolet", "ghostOrb", "dotsProjector"],
+      "strength": "Focuses exclusively on its chosen target and ignores other players during hunts",
+      "weakness": "Crucifix protection radius is 5 meters (not 3m) for its target — easier to protect the target",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Selects one player as its 'target' at the start — will hunt this player even if others have lower sanity",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Produces a unique wailing/screeching sound detectable on the Parabolic Microphone",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Crucifix protection radius is doubled to 5m for its designated target",
+          "category": "equipment",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Hunt behavior and roaming patterns center around its target player, not just the ghost room",
+          "category": "hunt",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Unique wail/screech sound heard on Parabolic Microphone",
+        "During hunts, ghost ignores low-sanity players and chases a specific individual",
+        "Ghost consistently roams toward one particular player's location"
+      ]
+    },
+    {
+      "id": "jinn",
+      "name": "Jinn",
+      "evidence": ["emf5", "ultraviolet", "freezingTemps"],
+      "strength": "Moves at increased speed (2.5 m/s) when its target is far away and the fuse box is on",
+      "weakness": "Turning off the fuse box prevents the Jinn from using its speed ability",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Travels at 2.5 m/s when its target is 3+ meters away AND the fuse box is powered on",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Speed ability is completely disabled when the fuse box is turned off",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Can use a territory ability to instantly drain 25% sanity from all players in its area",
+          "category": "sanity",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Will not turn off the fuse box itself",
+          "category": "environment",
+          "identifyValue": "low"
+        }
+      ],
+      "identifyingClues": [
+        "Moves extremely fast when fuse box is on but slows dramatically when it's turned off",
+        "Sudden mass sanity loss across all players simultaneously",
+        "Fuse box stays powered on despite ghost activity"
+      ]
+    },
+    {
+      "id": "mare",
+      "name": "Mare",
+      "evidence": ["spiritBox", "ghostOrb", "ghostWriting"],
+      "strength": "Hunts at 60% sanity in darkness — far earlier than most ghosts",
+      "weakness": "Has a lower 40% hunt threshold if lights are on in its room — keeping lights on is protective",
+      "huntSanityThreshold": 50,
+      "huntSanityThresholdNotes": "60% in darkness, 40% in lit rooms",
+      "uniqueBehaviors": [
+        {
+          "description": "Hunts at 60% average sanity when its room is dark, but only 40% when lights are on",
+          "category": "sanity",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Actively tries to turn off lights — has a higher chance of turning lights off during events",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Cannot turn lights ON — only turns them off",
+          "category": "environment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Lights go off frequently and unexpectedly",
+        "Ghost never turns lights back on after turning them off",
+        "Early hunts in dark rooms before sanity has dropped very low"
+      ]
+    },
+    {
+      "id": "revenant",
+      "name": "Revenant",
+      "evidence": ["ghostOrb", "ghostWriting", "freezingTemps"],
+      "strength": "Moves at 3 m/s when it detects a player — one of the fastest hunting ghosts",
+      "weakness": "Travels at only 1 m/s when no player is detected — very slow when no one is found",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Extremely slow (1 m/s) when no player is detected or visible",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Surges to 3 m/s instantly when it detects or sees a player — one of the fastest ghosts",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Speed change is dramatic and sudden — the contrast between slow/fast is highly noticeable",
+          "category": "hunt",
+          "identifyValue": "high"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost moves extremely slowly while wandering, then instantly sprints when it spots someone",
+        "Ghost feels 'lazy' until a player is detected, then becomes very dangerous",
+        "During hunts, standing very still can keep the ghost slow as it searches"
+      ]
+    },
+    {
+      "id": "shade",
+      "name": "Shade",
+      "evidence": ["emf5", "ghostWriting", "freezingTemps"],
+      "strength": "Extremely difficult to get evidence from — will not interact when players are nearby",
+      "weakness": "Will not initiate a hunt if any player is in the same room as it",
+      "huntSanityThreshold": 35,
+      "uniqueBehaviors": [
+        {
+          "description": "Will not perform interactions or events when a player is in the same room",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Cannot initiate a hunt if any player is in its current room",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Very low hunt sanity threshold of 35% — won't hunt until sanity is very low",
+          "category": "sanity",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Can manifest as a shadow figure instead of a full ghost appearance during events",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Very little activity when investigators are present in the ghost room",
+        "Evidence appears only when no one is watching or inside the room",
+        "Surprisingly safe investigation — rarely hunts even at low sanity",
+        "Ghost room activity increases when all players leave"
+      ]
+    },
+    {
+      "id": "demon",
+      "name": "Demon",
+      "evidence": ["ultraviolet", "ghostWriting", "freezingTemps"],
+      "strength": "Can initiate a hunt at ANY sanity level, including 100%",
+      "weakness": "Successful crucifix use against it counts as two uses — and crucifix has a 5m range",
+      "huntSanityThreshold": 100,
+      "uniqueBehaviors": [
+        {
+          "description": "Can hunt at any sanity level — even at 100% team sanity",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Shortest cooldown between hunts — 20 seconds vs. the normal 25 seconds",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Crucifix effective range is doubled to 5 meters instead of 3 meters",
+          "category": "equipment",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Ouija Board questions do not drain sanity when asked to a Demon",
+          "category": "equipment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Hunts extremely early in the investigation before sanity has dropped",
+        "Multiple back-to-back hunts with very short cooldowns",
+        "Hunts happening despite full or near-full team sanity"
+      ]
+    },
+    {
+      "id": "yurei",
+      "name": "Yurei",
+      "evidence": ["ghostOrb", "freezingTemps", "dotsProjector"],
+      "strength": "Applies heavy sanity drain to players in the same room during ghost events",
+      "weakness": "Smudging within its room temporarily traps it there — it cannot wander for 90 seconds",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Can fully slam a door shut during ghost events (doors close completely, not partially)",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Smudging within its room traps it in that room for 90 seconds — it cannot roam",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Applies significant sanity drain to players who are in the same room during its ghost event",
+          "category": "sanity",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Doors slamming fully shut rather than just swinging",
+        "Unusual sanity drain when standing in the ghost room during events",
+        "After smudging, ghost stays in one room and doesn't roam to other areas"
+      ]
+    },
+    {
+      "id": "oni",
+      "name": "Oni",
+      "evidence": ["emf5", "freezingTemps", "dotsProjector"],
+      "strength": "More active and throws objects more forcefully when players are present",
+      "weakness": "Increased activity makes it easier to find and gather evidence",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Activity level increases when players are in the same room — more interactions, more events",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "CANNOT produce the air ball / ghost mist ghost event — if you never see mist, suspect Oni",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Throws objects harder and with greater frequency than other ghosts",
+          "category": "environment",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Appears in full physical form more often — less likely to appear as a shadow",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Very high activity when players are present in the ghost room",
+        "Never produces the floating ball of ghost mist (air ball) event",
+        "Evidence is easy to gather because ghost is very interactive"
+      ]
+    },
+    {
+      "id": "yokai",
+      "name": "Yokai",
+      "evidence": ["spiritBox", "ghostOrb", "dotsProjector"],
+      "strength": "Speaking near it triggers hunts at 80% sanity — far above the normal 50%",
+      "weakness": "During hunts, can only detect players within 2.5 meters — very short detection range",
+      "huntSanityThreshold": 50,
+      "huntSanityThresholdNotes": "80% when players are talking near it",
+      "uniqueBehaviors": [
+        {
+          "description": "Hunt threshold jumps to 80% sanity when players talk near it — talking is dangerous",
+          "category": "sanity",
+          "identifyValue": "high"
+        },
+        {
+          "description": "During hunts, can only detect players within 2.5 meters (vs. normal ~10 meters)",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Talking near the ghost increases its activity and event frequency",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Hunts very early when players are talking inside or near the ghost room",
+        "During a hunt, ghost seems unable to find players who are moderately far away",
+        "Activity spikes noticeably when players speak aloud"
+      ]
+    },
+    {
+      "id": "hantu",
+      "name": "Hantu",
+      "evidence": ["ultraviolet", "ghostOrb", "freezingTemps"],
+      "strength": "Moves faster in cold rooms — in freezing temperatures it can reach 2.7 m/s",
+      "weakness": "Moves very slowly in warm rooms — turning the fuse box off limits its speed",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Hunt speed directly correlates with room temperature — faster in cold, slower in warm rooms",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Cannot turn the fuse box on — fuse box stays off if the Hantu turns it off",
+          "category": "equipment",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "In freezing temperature rooms, can reach up to 2.7 m/s — dangerous in cold ghost rooms",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Emits a visible fog breath cloud more frequently than other ghosts",
+          "category": "general",
+          "identifyValue": "low"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost moves dramatically faster in cold rooms than in warm corridors",
+        "Speed fluctuates visibly as ghost transitions between rooms of different temperatures",
+        "Fuse box does not turn back on after ghost activity"
+      ]
+    },
+    {
+      "id": "goryo",
+      "name": "Goryo",
+      "evidence": ["emf5", "ultraviolet", "dotsProjector"],
+      "strength": "DOTS Projector evidence only visible through a video camera — not visible to the naked eye",
+      "weakness": "Rarely strays from its ghost room — very limited roaming range",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "DOTS silhouette is ONLY visible through a video camera feed — never with the naked eye",
+          "category": "evidence",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Only produces DOTS evidence when no players are in the same room as the projector",
+          "category": "evidence",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Has a very strong room preference — rarely moves to other rooms when not hunting",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "DOTS projector placed in ghost room shows no activity while players watch, but camera feed shows silhouette",
+        "Ghost almost never leaves its designated room between hunts",
+        "Must review camera footage remotely to confirm DOTS evidence"
+      ]
+    },
+    {
+      "id": "myling",
+      "name": "Myling",
+      "evidence": ["emf5", "ultraviolet", "ghostWriting"],
+      "strength": "Very quiet during hunts — ghost footsteps and equipment interference have shorter range",
+      "weakness": "Produces very frequent paranormal sounds, making it easy to locate with the Parabolic Microphone",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Footstep sounds and equipment interference are only audible within a very short range during hunts",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Electronic interference (flashlight flickering) also has a shorter range — less warning when hunting",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Produces paranormal sounds very frequently — Parabolic Microphone constantly picks up activity",
+          "category": "equipment",
+          "identifyValue": "high"
+        }
+      ],
+      "identifyingClues": [
+        "Equipment stops flickering and sounds cut out much closer to the ghost than expected during a hunt",
+        "Ghost sneaks up without the usual audio warnings",
+        "Parabolic Microphone detects constant paranormal sounds even when ghost is inactive"
+      ]
+    },
+    {
+      "id": "onryo",
+      "name": "Onryo",
+      "evidence": ["spiritBox", "ghostOrb", "freezingTemps"],
+      "strength": "Extinguishing a flame near it can trigger an immediate hunt attempt",
+      "weakness": "Lit flames act like a crucifix — the ghost will not hunt while a flame is present nearby",
+      "huntSanityThreshold": 60,
+      "uniqueBehaviors": [
+        {
+          "description": "Lit candles, lighters, and flames prevent it from initiating a hunt within 4 meters — like a crucifix",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Each time a flame is extinguished near it, there is an extra chance it will immediately try to hunt",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Higher base hunt threshold of 60% sanity — hunts earlier than most ghosts",
+          "category": "sanity",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Will prioritize blowing out candles as a ghost interaction",
+          "category": "environment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Hunts start suspiciously early, especially when candles get blown out",
+        "Keeping candles lit near the ghost room prevents hunts even at low sanity",
+        "Ghost seems drawn to candles and frequently extinguishes them"
+      ]
+    },
+    {
+      "id": "theTwins",
+      "name": "The Twins",
+      "evidence": ["emf5", "spiritBox", "freezingTemps"],
+      "strength": "Can interact with the environment from two separate locations simultaneously",
+      "weakness": "Either twin can start a hunt — one hunts at 1.9× speed, the other at 0.75× speed",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Interacts with objects in two places almost simultaneously — one within 3m, one within 16m of ghost room",
+          "category": "environment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Either 'twin' can initiate a hunt — hunt can start from the main ghost location or the distant interaction point",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "One twin moves at 1.9 m/s during hunts, the other at 1.5 m/s — inconsistent hunt speed",
+          "category": "hunt",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Objects interacting in two completely separate rooms nearly simultaneously",
+        "Hunts appear to start from a location the ghost was never seen near",
+        "Inconsistent ghost hunt speed between hunts"
+      ]
+    },
+    {
+      "id": "raiju",
+      "name": "Raiju",
+      "evidence": ["emf5", "ghostOrb", "dotsProjector"],
+      "strength": "Speeds up significantly near active electronic equipment during hunts",
+      "weakness": "Disrupts electronics from a farther range, making it easier to detect its location",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Moves faster near active electronics (cameras, phones, equipment) during hunts — up to 2.5 m/s",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Disrupts electronic equipment from 15 meters away (vs. 10 meters for normal ghosts)",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Sanity drain rate is not abnormal — normal passive drain",
+          "category": "sanity",
+          "identifyValue": "low"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost moves notably faster near deployed equipment during a hunt",
+        "Equipment begins flickering from farther distances than expected",
+        "Turning off or putting away active electronics slows the ghost during a hunt"
+      ]
+    },
+    {
+      "id": "obake",
+      "name": "Obake",
+      "evidence": ["emf5", "ultraviolet", "ghostOrb"],
+      "strength": "Can leave unique 6-finger UV handprints — and has a chance to leave no fingerprints at all",
+      "weakness": "Has a small chance to reveal its true form briefly during hunts by shape-shifting",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Has a 1-in-6 chance to leave 6-fingered handprints (instead of normal 5 fingers) under UV",
+          "category": "evidence",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Has a small chance to leave NO fingerprints at all, even though UV is its evidence type",
+          "category": "evidence",
+          "identifyValue": "medium"
+        },
+        {
+          "description": "Can change its ghost model (shape-shift) during hunts — may appear as a different ghost type",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Fingerprints fade faster than normal — shorter UV evidence window",
+          "category": "evidence",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "6-fingered handprint found under UV light",
+        "Ghost changes its appearance during a single hunt",
+        "UV fingerprints disappear noticeably faster than expected"
+      ]
+    },
+    {
+      "id": "theMimic",
+      "name": "The Mimic",
+      "evidence": ["spiritBox", "ultraviolet", "freezingTemps"],
+      "fakeEvidence": ["ghostOrb"],
+      "strength": "Mimics the behavior, abilities, and evidence of other ghost types — extremely difficult to identify",
+      "weakness": "Always produces Ghost Orbs as a fake 4th piece of evidence, revealing its deceptive nature",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Periodically changes which ghost type it mimics, copying that ghost's behavior and ghost-specific traits",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "ALWAYS shows Ghost Orb evidence even though it is NOT one of its three real evidence types",
+          "category": "evidence",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Mimicry includes hunt speed, sanity thresholds, and special interactions of the ghost being copied",
+          "category": "hunt",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost Orb is present alongside Spirit Box, UV, and Freezing — 4 evidence pieces confirms Mimic",
+        "Ghost behavior seems to contradict its evidence or changes behavior between hunts",
+        "Behaviors from multiple different ghost types observed in a single investigation"
+      ]
+    },
+    {
+      "id": "moroi",
+      "name": "Moroi",
+      "evidence": ["spiritBox", "ghostWriting", "freezingTemps"],
+      "strength": "Curses players who hear it through Spirit Box, causing doubled sanity drain rate",
+      "weakness": "Smudge sticks disorient it for 12 seconds during a hunt (double the normal 6 seconds)",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Players who hear the Moroi respond through Spirit Box, Parabolic Mic, or Sound Recorder become cursed — sanity drains twice as fast",
+          "category": "sanity",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Hunt speed increases as team average sanity decreases — up to 3.7 m/s at very low sanity (fastest in the game)",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Smudge sticks blind it for 12 seconds instead of the normal 6 seconds",
+          "category": "equipment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Team sanity drops very rapidly after using the Spirit Box",
+        "Ghost becomes progressively faster as investigation continues and sanity falls",
+        "Smudge sticks seem to blind the ghost for longer than usual"
+      ]
+    },
+    {
+      "id": "deogen",
+      "name": "Deogen",
+      "evidence": ["spiritBox", "ghostWriting", "dotsProjector"],
+      "strength": "Always knows the exact location of all players — hiding is completely useless",
+      "weakness": "Slows to 0.4 m/s when very close to a player — the slowest ghost at close range",
+      "huntSanityThreshold": 40,
+      "uniqueBehaviors": [
+        {
+          "description": "Has permanent line-of-sight to all players during hunts — hiding in lockers or behind obstacles does not work",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Moves at 3 m/s when far from a player but drops to 0.4 m/s when within 2.5 meters of one",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Produces a unique slow, heavy breathing / bull-like sound through the Spirit Box",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Lower hunt sanity threshold of 40%",
+          "category": "sanity",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Unique breathing/snorting sound heard through Spirit Box (distinct from normal voice responses)",
+        "Ghost finds hidden players easily — hides do not work",
+        "Ghost charges quickly from far away but slows dramatically when it gets close — circling behavior"
+      ]
+    },
+    {
+      "id": "thaye",
+      "name": "Thaye",
+      "evidence": ["ghostOrb", "ghostWriting", "dotsProjector"],
+      "strength": "Starts very powerful — high hunt threshold and fast speed when young",
+      "weakness": "Ages over time, becoming slower and less likely to hunt as the investigation progresses",
+      "huntSanityThreshold": 75,
+      "huntSanityThresholdNotes": "Starts at 75% when young, decreases to 15% at maximum age",
+      "uniqueBehaviors": [
+        {
+          "description": "'Ages' progressively — starts fast and active (75% hunt threshold), ends slow and passive (15% threshold)",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Aging accelerates when players are present in the ghost room — spending time near it speeds up its aging",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Activity, hunt speed, and hunt frequency all decrease as the Thaye ages",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Can be prompted to age via Ouija Board interaction",
+          "category": "equipment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Investigation starts with an extremely aggressive ghost that rapidly calms down over time",
+        "Ghost seems less interested in hunting as investigation progresses past the first few minutes",
+        "Activity level drops noticeably over the course of the investigation"
+      ]
+    },
+    {
+      "id": "obambo",
+      "name": "Obambo",
+      "evidence": ["ghostWriting", "ultraviolet", "dotsProjector"],
+      "strength": "Hunts earlier and moves faster when in its aggressive state",
+      "weakness": "Easier to track and hunts later when in its calm state",
+      "huntSanityThreshold": 50,
+      "huntSanityThresholdNotes": "Higher threshold (~60%) when aggressive, lower (~40%) when calm",
+      "uniqueBehaviors": [
+        {
+          "description": "Alternates between 'calm' and 'aggressive' states approximately every 2 minutes",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "When aggressive: hunts at higher sanity threshold and moves faster during hunts",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "When calm: lower hunt threshold, slower movement, and easier to track with equipment",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "State transitions are unpredictable — ghost mood switches without warning",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Hunt behavior is wildly inconsistent — sometimes hunts early, sometimes very late",
+        "Ghost activity visibly cycles between aggressive and quiet phases roughly every 2 minutes",
+        "Speed during hunts varies significantly between encounters"
+      ]
+    },
+    {
+      "id": "gallu",
+      "name": "Gallu",
+      "evidence": ["emf5", "ultraviolet", "spiritBox"],
+      "strength": "Using protective equipment (crucifix, incense) causes it to enter an enraged state",
+      "weakness": "After being enraged, it exhausts itself and enters a weakened state where protection is more effective",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Has three states: normal, enraged, and weakened — transitions triggered by use of protective equipment",
+          "category": "general",
+          "identifyValue": "high"
+        },
+        {
+          "description": "When enraged: moves faster and protective equipment (crucifix, incense) is weakened / less effective",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "After being enraged, exhaustion causes it to enter a weakened state — protective gear becomes more effective",
+          "category": "equipment",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Using a crucifix or incense against it triggers the enraged state transition",
+          "category": "equipment",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Using a crucifix or incense makes the ghost visibly angrier and faster rather than calming it",
+        "Ghost seems to hunt through or despite protective equipment in a cyclic pattern",
+        "After an aggressive phase triggered by protection use, the ghost becomes noticeably weakened"
+      ]
+    },
+    {
+      "id": "dayan",
+      "name": "Dayan",
+      "evidence": ["emf5", "ghostOrb", "spiritBox"],
+      "strength": "Speeds up dramatically when players move within 10 meters of it during a hunt",
+      "weakness": "Slows down significantly when players within 10 meters stand completely still",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Hunt speed increases dramatically when any player within 10 meters is moving",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Hunt speed decreases significantly when all nearby players (within 10m) stand completely still",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Speed change is near-instantaneous — running while it hunts nearby will make it almost double in speed",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Outside of hunts, it gains power from player movement nearby and loses power when players are still",
+          "category": "general",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost accelerates rapidly the moment players start running during a hunt",
+        "Standing completely still causes the ghost to slow or stall noticeably",
+        "Movement near ghost room during setup causes increased activity"
+      ]
+    }
+  ]
+}

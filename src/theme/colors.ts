@@ -1,0 +1,40 @@
+export const colors = {
+  background: {
+    primary: '#0d0d1a',
+    secondary: '#13131f',
+    card: '#1a1a2e',
+    cardHover: '#1f1f38',
+    overlay: 'rgba(0, 0, 0, 0.7)',
+  },
+  text: {
+    primary: '#e8e8f0',
+    secondary: '#9090b0',
+    muted: '#5a5a7a',
+    accent: '#c8a0ff',
+  },
+  accent: {
+    purple: '#8b5cf6',
+    purpleLight: '#c084fc',
+    purpleDark: '#6d28d9',
+    teal: '#2dd4bf',
+    tealDark: '#0f766e',
+    red: '#ef4444',
+    redDark: '#991b1b',
+    amber: '#f59e0b',
+    green: '#22c55e',
+  },
+  evidence: {
+    emf5: '#ef4444',
+    spiritBox: '#3b82f6',
+    ultraviolet: '#a855f7',
+    ghostWriting: '#f59e0b',
+    ghostOrb: '#22c55e',
+    freezingTemps: '#06b6d4',
+    dotsProjector: '#f97316',
+  },
+  border: {
+    subtle: 'rgba(139, 92, 246, 0.15)',
+    medium: 'rgba(139, 92, 246, 0.3)',
+    strong: 'rgba(139, 92, 246, 0.6)',
+  },
+} as const
