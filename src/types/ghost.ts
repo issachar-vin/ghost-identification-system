@@ -26,9 +26,39 @@ export interface UniqueBehavior {
 export interface EvidenceType {
   id: EvidenceId
   name: string
+  shortName: string
   description: string
   equipment: string
 }
+
+export interface ToggleInteraction {
+  id: string
+  label: string
+  description: string
+  filterType: 'toggle'
+  defaultValue: boolean
+  trueLabel: string
+  falseLabel: string
+}
+
+export interface CategoryOption {
+  value: string
+  label: string
+  description: string
+}
+
+export interface CategoryInteraction {
+  id: string
+  label: string
+  description: string
+  filterType: 'category'
+  defaultValue: string
+  options: CategoryOption[]
+}
+
+export type InteractionDefinition = ToggleInteraction | CategoryInteraction
+
+export type GhostInteractionOverrides = Record<string, boolean | string>
 
 export interface Ghost {
   id: string
@@ -41,6 +71,7 @@ export interface Ghost {
   huntSanityThresholdNotes?: string
   uniqueBehaviors: UniqueBehavior[]
   identifyingClues: string[]
+  interactions: GhostInteractionOverrides
 }
 
 export interface GhostData {
@@ -52,5 +83,6 @@ export interface GhostData {
     notes: string
   }
   evidenceTypes: EvidenceType[]
+  interactions: InteractionDefinition[]
   ghosts: Ghost[]
 }
