@@ -18,36 +18,47 @@ interface Props {
   onCycleEvidence: (id: EvidenceId) => void
   onSetInteraction: (id: string, value: boolean | string | null) => void
   onReset: () => void
+  onClose?: () => void
   matchCount: number
   totalCount: number
+  /** When true, sidebar renders as a slide-in overlay (mobile) */
+  mobileOpen?: boolean
 }
 
 export function FilterSidebar({
   evidenceTypes, evidenceFilters, includeCount, interactionDefs,
   interactionFilters, onCycleEvidence, onSetInteraction, onReset,
-  matchCount, totalCount,
+  onClose, matchCount, totalCount, mobileOpen,
 }: Props) {
+  const isMobileOverlay = mobileOpen !== undefined
   const hasActiveFilters =
     Object.values(evidenceFilters).some((s) => s !== 'off') ||
     Object.values(interactionFilters).some((v) => v !== null)
 
   return (
     <aside style={{
-      width: 260,
-      minWidth: 260,
-      height: '100vh',
-      position: 'sticky',
+      width: isMobileOverlay ? 'min(85%, 300px)' : 260,
+      minWidth: isMobileOverlay ? undefined : 260,
+      height: '100%',
+      position: isMobileOverlay ? 'absolute' : 'relative',
       top: 0,
+      left: 0,
+      bottom: 0,
       display: 'flex',
       flexDirection: 'column',
       background: colors.background.panel,
       borderRight: `1px solid ${colors.border.panel}`,
       overflow: 'hidden',
-      zIndex: 10,
+      zIndex: isMobileOverlay ? 50 : 10,
+      transform: isMobileOverlay
+        ? `translateX(${mobileOpen ? '0' : '-100%'})`
+        : undefined,
+      transition: isMobileOverlay ? 'transform 0.28s cubic-bezier(0.4,0,0.2,1)' : undefined,
     }}>
 
       {/* Header */}
-      <div style={{ padding: '20px 18px 16px', borderBottom: `1px solid ${colors.border.panel}` }}>
+      <div style={{ padding: '20px 18px 16px', borderBottom: `1px solid ${colors.border.panel}`, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div>
         <div style={{
           fontFamily: colors.font.display,
           fontSize: '11px',
@@ -67,6 +78,12 @@ export function FilterSidebar({
         }}>
           {matchCount}<span style={{ fontSize: 12, color: colors.text.secondary }}> / {totalCount} visible</span>
         </div>
+        </div>
+        {isMobileOverlay && onClose && (
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: colors.text.muted, fontSize: 20, lineHeight: 1, padding: 4, marginTop: 2 }}>
+            ✕
+          </button>
+        )}
       </div>
 
       {/* Scrollable filters */}
