@@ -134,7 +134,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
         <div style={{
           fontFamily: colors.font.display,
-          fontSize: 18,
+          fontSize: 21,
           color: colors.accent.blue,
           letterSpacing: '0.05em',
           textShadow: hovered ? '0 0 12px rgba(79,195,247,0.4)' : '0 0 12px rgba(79,195,247,0.2)',
@@ -174,7 +174,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
               key={eid}
               style={{
                 fontFamily: colors.font.mono,
-                fontSize: 10,
+                fontSize: 12,
                 padding: '3px 8px',
                 borderRadius: 3,
                 letterSpacing: '0.03em',
@@ -206,7 +206,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
           return (
             <span key={`fake-${eid}`} title="Always present — fake evidence" style={{
               fontFamily: colors.font.mono,
-              fontSize: 10,
+              fontSize: 12,
               padding: '3px 8px',
               borderRadius: 3,
               border: `1px dashed ${colors.text.muted}`,
@@ -232,7 +232,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
         {topClues.map((clue, i) => (
           <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: colors.text.muted, flexShrink: 0, marginTop: 6 }} />
-            <div style={{ fontFamily: colors.font.body, fontSize: 12.5, color: '#7a9ab0', lineHeight: 1.5, fontStyle: 'italic' }}>
+            <div style={{ fontFamily: colors.font.body, fontSize: 14, color: '#7a9ab0', lineHeight: 1.5, fontStyle: 'italic' }}>
               {clue}
             </div>
           </div>
@@ -245,9 +245,9 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
           {badges.map((b, i) => (
             <span key={i} style={{
               fontFamily: colors.font.mono,
-              fontSize: 9,
+              fontSize: 10,
               fontWeight: 700,
-              padding: '2px 6px',
+              padding: '2px 7px',
               borderRadius: 3,
               background: `${b.color}15`,
               color: b.color,
