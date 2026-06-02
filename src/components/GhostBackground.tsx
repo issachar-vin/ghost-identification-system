@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/animations.css'
 
-const GHOST_PATH =
-  'M12 2C7.59 2 4 5.59 4 10v10l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V10c0-4.41-3.59-8-8-8zm-2 11c-.83 0-1.5-.67-1.5-1.5S9.17 10 10 10s1.5.67 1.5 1.5S10.83 13 10 13zm4 0c-.83 0-1.5-.67-1.5-1.5S13.17 10 14 10s1.5.67 1.5 1.5S14.83 13 14 13z'
+// CSS filter chain: brightness(0) forces pure black, invert(1) flips to white,
+// then sepia+hue-rotate+saturate+brightness shifts to the target blue tone.
+// Adjust hue-rotate (175deg) to shift the hue if needed.
+const GHOST_FILTER =
+  'brightness(0) invert(1) sepia(1) hue-rotate(175deg) saturate(3) brightness(1.15) drop-shadow(0 0 5px rgba(79,195,247,0.7))'
 
 const MAX_CONCURRENT = 5
 const FADE_IN_MS = 350
@@ -138,18 +141,17 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
         willChange: 'transform, opacity',
       }}
     >
-      <svg
-        viewBox="0 0 24 24"
+      <img
+        src="/ghost.svg"
+        alt=""
         style={{
           width: '100%',
           height: '100%',
-          fill: '#a8dfff',
-          filter: 'blur(0.3px) drop-shadow(0 0 5px rgba(79, 195, 247, 0.7))',
+          filter: GHOST_FILTER,
           animation: `ghostFlicker ${ghost.flickerDuration} ease-in-out infinite`,
+          display: 'block',
         }}
-      >
-        <path d={GHOST_PATH} />
-      </svg>
+      />
     </div>
   )
 }
