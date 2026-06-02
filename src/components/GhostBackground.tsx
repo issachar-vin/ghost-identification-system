@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/animations.css'
 
-// CSS filter chain: brightness(0) forces pure black, invert(1) flips to white,
-// then sepia+hue-rotate+saturate+brightness shifts to the target blue tone.
-// Adjust hue-rotate (175deg) to shift the hue if needed.
+// brightness(0) → pure black, invert(1) → pure white outline,
+// drop-shadow creates the atmospheric blue glow around the white outline.
 const GHOST_FILTER =
-  'brightness(0) invert(1) sepia(1) hue-rotate(175deg) saturate(3) brightness(1.15) drop-shadow(0 0 5px rgba(79,195,247,0.7))'
+  'brightness(0) invert(1) drop-shadow(0 0 8px rgba(79,195,247,0.9)) drop-shadow(0 0 16px rgba(79,195,247,0.5))'
 
 const MAX_CONCURRENT = 5
 const FADE_IN_MS = 350
