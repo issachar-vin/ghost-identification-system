@@ -34,7 +34,7 @@ function makeGhost(id: number): GhostInstance {
     id,
     startXPct: rand(5, 90),
     startYPct: rand(5, 85),
-    size: rand(40, 100),
+    size: rand(120, 320),
     maxOpacity: rand(0.07, 0.18),
     speed: rand(0.3, 1.4),
     // Higher turnChance → tighter wander, lower → straighter paths
