@@ -3,8 +3,8 @@
     "game": "Phasmophobia",
     "version": "0.15.1.0",
     "lastUpdated": "2026-01-01",
-    "totalGhosts": 27,
-    "notes": "Winter's Jest update added Dayan, Obambo, and Gallu"
+    "totalGhosts": 29,
+    "notes": "Winter's Jest update added Dayan, Obambo, and Gallu; subsequent update added Kormos and Aswang"
   },
   "evidenceTypes": [
     {
@@ -1296,6 +1296,86 @@
         "speedBehavior": "motion_dependent",
         "alwaysFemale": true
       },
+      "isNew": true
+    },
+    {
+      "id": "kormos",
+      "name": "Kormos",
+      "evidence": [
+        "ghostOrb",
+        "spiritBox",
+        "ultraviolet"
+      ],
+      "strength": "Extremely sensitive hearing — detects players by voice, footsteps, and active electronics from up to 30 meters",
+      "weakness": "Completely blind — motionless, silent players are totally invisible to it regardless of proximity",
+      "huntSanityThreshold": 50,
+      "huntSanityThresholdNotes": "50% normally; sprinting in the same room raises the trigger threshold to 70%",
+      "uniqueBehaviors": [
+        {
+          "description": "Cannot see players at all — hunts entirely by sound (voice, footsteps, active electronics)",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Standing still and staying completely silent makes a player undetectable — ghost walks past them",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Kills within 1.5 meters regardless of obstacles — can kill through furniture and walls at close range",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Sprinting in the same room can trigger a hunt at up to 70% average sanity",
+          "category": "sanity",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Ghost walks directly past a motionless, silent player without reacting — definitive tell",
+        "Shares Ghost Orbs, Spirit Box, and UV with The Mimic — check for freezing temps to separate them (Mimic has freezing, Kormos does not)",
+        "Sprinting near the ghost room triggers a hunt at surprisingly high sanity"
+      ],
+      "interactions": {
+        "huntThreshold": "early"
+      },
+      "isNew": true
+    },
+    {
+      "id": "aswang",
+      "name": "Aswang",
+      "evidence": [
+        "dotsProjector",
+        "freezingTemps",
+        "ghostWriting"
+      ],
+      "strength": "Reaches maximum pursuit speed much faster than other ghosts when maintaining line of sight",
+      "weakness": "Hunt ends immediately if it detects a player entering an official hiding spot (closet, locker)",
+      "huntSanityThreshold": 50,
+      "uniqueBehaviors": [
+        {
+          "description": "Hunt ends instantly when it detects a player entering an official hiding spot — hiding always stops the chase",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Accelerates to maximum speed in roughly half the normal time during line-of-sight pursuit",
+          "category": "hunt",
+          "identifyValue": "high"
+        },
+        {
+          "description": "Breaking line of sight resets its acceleration — frequent direction changes are more survivable than straight sprinting",
+          "category": "hunt",
+          "identifyValue": "medium"
+        }
+      ],
+      "identifyingClues": [
+        "Hunt stops the moment you successfully enter a closet or locker while the ghost has line of sight",
+        "Unique evidence combination — DOTS, Freezing, and Ghost Writing — belongs to no other ghost",
+        "Ghost accelerates noticeably faster than expected on a straight-line chase with visual contact"
+      ],
+      "interactions": {},
       "isNew": true
     }
   ]
