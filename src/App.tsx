@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import type { Ghost, GhostData, EvidenceFilters } from './types'
+import type { Ghost, GhostData } from './types'
 import { useGhostFilter } from './hooks/useGhostFilter'
 import { useIsMobile } from './hooks/useIsMobile'
 import { colors } from './theme'
