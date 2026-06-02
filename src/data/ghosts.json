@@ -223,6 +223,42 @@
       "defaultValue": true,
       "trueLabel": "Yes",
       "falseLabel": "No — only off"
+    },
+    {
+      "id": "canTurnOffBreaker",
+      "label": "Turns Off Breaker",
+      "description": "Can the ghost turn off the fuse box?",
+      "filterType": "toggle",
+      "defaultValue": true,
+      "trueLabel": "Yes",
+      "falseLabel": "No — never turns it off"
+    },
+    {
+      "id": "canTurnOnBreaker",
+      "label": "Turns On Breaker",
+      "description": "Can the ghost turn the fuse box back on?",
+      "filterType": "toggle",
+      "defaultValue": true,
+      "trueLabel": "Yes",
+      "falseLabel": "No — never turns it on"
+    },
+    {
+      "id": "alwaysFemale",
+      "label": "Always Female",
+      "description": "Does this ghost always appear with a female model and female name?",
+      "filterType": "toggle",
+      "defaultValue": false,
+      "trueLabel": "Yes — always female",
+      "falseLabel": "No — gender varies"
+    },
+    {
+      "id": "canLeave6FingerPrint",
+      "label": "6-Finger Print",
+      "description": "Can the ghost leave a 6-fingered UV handprint? Only the Obake can produce this.",
+      "filterType": "toggle",
+      "defaultValue": false,
+      "trueLabel": "Yes — 6 fingers observed",
+      "falseLabel": "No — normal or none"
     }
   ],
   "ghosts": [
@@ -409,7 +445,8 @@
         "Ghost roams toward one player's location regardless of where others are standing"
       ],
       "interactions": {
-        "hasSingleTarget": true
+        "hasSingleTarget": true,
+        "alwaysFemale": true
       }
     },
     {
@@ -445,7 +482,9 @@
         "Sudden simultaneous sanity loss across all players at once",
         "Fuse box consistently stays powered on despite ongoing ghost activity"
       ],
-      "interactions": {}
+      "interactions": {
+        "canTurnOffBreaker": false
+      }
     },
     {
       "id": "mare",
@@ -759,7 +798,8 @@
         "Fuse box does not come back on despite ghost activity near it"
       ],
       "interactions": {
-        "speedBehavior": "temp_dependent"
+        "speedBehavior": "temp_dependent",
+        "canTurnOnBreaker": false
       }
     },
     {
@@ -981,7 +1021,9 @@
         "Ghost changes its visual appearance during a single hunt",
         "UV fingerprints disappear noticeably faster than expected"
       ],
-      "interactions": {}
+      "interactions": {
+        "canLeave6FingerPrint": true
+      }
     },
     {
       "id": "theMimic",
@@ -1251,7 +1293,8 @@
         "Movement near the ghost room during setup causes noticeably increased activity"
       ],
       "interactions": {
-        "speedBehavior": "motion_dependent"
+        "speedBehavior": "motion_dependent",
+        "alwaysFemale": true
       },
       "isNew": true
     }

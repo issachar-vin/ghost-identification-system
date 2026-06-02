@@ -1,9 +1,12 @@
-.PHONY: install dev build lint preview docker-build clean
+.PHONY: install dev dev-local build lint preview docker-build clean
 
 install:
 	npm install
 
 dev:
+	docker compose up dev
+
+dev-local:
 	npm run dev
 
 build:
