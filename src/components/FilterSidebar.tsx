@@ -1,9 +1,6 @@
 import type {
-  EvidenceType,
-  EvidenceFilters,
-  InteractionDefinition,
-  InteractionFilters,
-  EvidenceId,
+  EvidenceType, EvidenceFilters, InteractionDefinition,
+  InteractionFilters, EvidenceId,
 } from '../types'
 import { MAX_INCLUDE_COUNT } from '../types'
 import { colors } from '../theme'
@@ -26,147 +23,159 @@ interface Props {
 }
 
 export function FilterSidebar({
-  evidenceTypes,
-  evidenceFilters,
-  includeCount,
-  interactionDefs,
-  interactionFilters,
-  onCycleEvidence,
-  onSetInteraction,
-  onReset,
-  matchCount,
-  totalCount,
+  evidenceTypes, evidenceFilters, includeCount, interactionDefs,
+  interactionFilters, onCycleEvidence, onSetInteraction, onReset,
+  matchCount, totalCount,
 }: Props) {
   const hasActiveFilters =
     Object.values(evidenceFilters).some((s) => s !== 'off') ||
     Object.values(interactionFilters).some((v) => v !== null)
 
   return (
-    <aside style={sidebarStyle}>
+    <aside style={{
+      width: 260,
+      minWidth: 260,
+      height: '100vh',
+      position: 'sticky',
+      top: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      background: colors.background.panel,
+      borderRight: `1px solid ${colors.border.panel}`,
+      overflow: 'hidden',
+      zIndex: 10,
+    }}>
+
       {/* Header */}
-      <div style={{ padding: '20px 16px 16px', borderBottom: `1px solid ${colors.border.subtle}` }}>
-        <h1 style={{
-          fontSize: '15px',
-          fontWeight: 700,
-          color: colors.text.accent,
-          letterSpacing: '0.08em',
-          marginBottom: '2px',
-          fontFamily: "'Courier New', monospace",
+      <div style={{ padding: '20px 18px 16px', borderBottom: `1px solid ${colors.border.panel}` }}>
+        <div style={{
+          fontFamily: colors.font.display,
+          fontSize: '11px',
+          letterSpacing: '0.2em',
+          color: colors.text.secondary,
           textTransform: 'uppercase',
-          animation: 'flicker 12s ease-in-out infinite',
-          textShadow: `0 0 10px rgba(57,255,20,0.35)`,
+          marginBottom: 4,
         }}>
-          ☽ Ghost ID System
-        </h1>
-        <p style={{ fontSize: '10px', color: colors.text.muted, fontFamily: 'monospace', letterSpacing: '0.05em' }}>
-          Phasmophobia · {totalCount} entities
-        </p>
+          Ghost Journal
+        </div>
+        <div style={{
+          fontFamily: colors.font.mono,
+          fontSize: 22,
+          color: colors.accent.blue,
+          lineHeight: 1,
+          animation: 'countFlicker 9s infinite',
+        }}>
+          {matchCount}<span style={{ fontSize: 12, color: colors.text.secondary }}> / {totalCount} visible</span>
+        </div>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px' }}>
-        {/* Evidence section */}
-        <section style={{ marginBottom: '20px' }}>
-          <div style={sectionHeaderStyle}>
-            <span>Evidence</span>
-            <span style={{ fontSize: '11px', color: colors.text.muted, fontWeight: 400 }}>
-              {includeCount}/{MAX_INCLUDE_COUNT} selected
-            </span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {evidenceTypes.map((et) => (
-              <EvidenceFilterItem
-                key={et.id}
-                evidenceType={et}
-                state={evidenceFilters[et.id]}
-                onCycle={() => onCycleEvidence(et.id)}
-                includeDisabled={includeCount >= MAX_INCLUDE_COUNT && evidenceFilters[et.id] === 'off'}
-              />
-            ))}
-          </div>
-        </section>
+      {/* Scrollable filters */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 18px 0' }}>
 
-        {/* Interactions section */}
-        <section>
-          <div style={{ ...sectionHeaderStyle, marginBottom: '12px' }}>
-            <span>Behaviors</span>
-          </div>
-          {interactionDefs.map((def) => {
-            const currentValue = interactionFilters[def.id] ?? null
-            if (def.filterType === 'toggle') {
-              return (
-                <ToggleFilter
-                  key={def.id}
-                  definition={def}
-                  value={currentValue as boolean | null}
-                  onChange={(v) => onSetInteraction(def.id, v)}
-                />
-              )
-            }
-            if (def.filterType === 'category') {
-              return (
-                <CategoryFilter
-                  key={def.id}
-                  definition={def}
-                  value={currentValue as string | null}
-                  onChange={(v) => onSetInteraction(def.id, v)}
-                />
-              )
-            }
-            return null
-          })}
-        </section>
+        {/* Evidence */}
+        <div style={sectionTitleStyle}>Evidence</div>
+        <div style={{ marginBottom: 4 }}>
+          {evidenceTypes.map((et) => (
+            <EvidenceFilterItem
+              key={et.id}
+              evidenceType={et}
+              state={evidenceFilters[et.id]}
+              onCycle={() => onCycleEvidence(et.id)}
+              includeDisabled={includeCount >= MAX_INCLUDE_COUNT && evidenceFilters[et.id] === 'off'}
+            />
+          ))}
+        </div>
+
+        {/* Behaviors */}
+        <div style={{ ...sectionTitleStyle, marginTop: 16 }}>Behaviors</div>
+        {interactionDefs.map((def) => {
+          const val = interactionFilters[def.id] ?? null
+          if (def.filterType === 'toggle') {
+            return (
+              <ToggleFilter key={def.id} definition={def} value={val as boolean | null}
+                onChange={(v) => onSetInteraction(def.id, v)} />
+            )
+          }
+          return (
+            <CategoryFilter key={def.id} definition={def} value={val as string | null}
+              onChange={(v) => onSetInteraction(def.id, v)} />
+          )
+        })}
       </div>
 
-      {/* Footer */}
-      <div style={{ padding: '12px 16px', borderTop: `1px solid ${colors.border.subtle}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: '12px', color: colors.text.secondary }}>
-          <strong style={{ color: colors.text.primary }}>{matchCount}</strong> match{matchCount !== 1 ? 'es' : ''}
-        </span>
-        {hasActiveFilters && (
-          <button
-            onClick={onReset}
-            style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              padding: '4px 10px',
-              borderRadius: '5px',
-              border: `1px solid ${colors.border.medium}`,
-              background: 'transparent',
-              color: colors.text.secondary,
-              cursor: 'pointer',
-            }}
-          >
-            Reset
-          </button>
-        )}
+      {/* Hint */}
+      <div style={{
+        padding: '10px 18px 12px',
+        fontFamily: colors.font.mono,
+        fontSize: 9,
+        color: colors.text.muted,
+        lineHeight: 1.7,
+        borderTop: `1px solid ${colors.border.panel}`,
+      }}>
+        CLICK ONCE — confirmed<br />
+        CLICK TWICE — ruled out<br />
+        CLICK THRICE — reset
       </div>
+
+      {/* Legend */}
+      <div style={{ padding: '10px 18px 12px', borderTop: `1px solid ${colors.border.panel}` }}>
+        <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.muted, textTransform: 'uppercase', marginBottom: 8 }}>Key</div>
+        {[
+          { color: colors.accent.green, label: 'Evidence confirmed' },
+          { color: colors.accent.red,   label: 'Evidence ruled out' },
+          { color: colors.text.muted,   label: 'Not selected' },
+        ].map(({ color, label }) => (
+          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7, fontFamily: colors.font.mono, fontSize: 10, color: colors.text.muted, marginBottom: 5 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }} />
+            {label}
+          </div>
+        ))}
+      </div>
+
+      {/* Reset */}
+      {hasActiveFilters && (
+        <button
+          onClick={onReset}
+          style={{
+            display: 'block',
+            width: 'calc(100% - 36px)',
+            margin: '0 18px 16px',
+            padding: '8px',
+            background: 'transparent',
+            border: `1px solid ${colors.text.muted}`,
+            color: colors.text.muted,
+            fontFamily: colors.font.mono,
+            fontSize: 10,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            borderRadius: 4,
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            const b = e.currentTarget
+            b.style.borderColor = colors.accent.blue
+            b.style.color = colors.accent.blue
+            b.style.boxShadow = '0 0 10px rgba(79,195,247,0.2)'
+          }}
+          onMouseLeave={(e) => {
+            const b = e.currentTarget
+            b.style.borderColor = colors.text.muted
+            b.style.color = colors.text.muted
+            b.style.boxShadow = 'none'
+          }}
+        >
+          ⟳ Clear all filters
+        </button>
+      )}
     </aside>
   )
 }
 
-const sidebarStyle: React.CSSProperties = {
-  width: '300px',
-  minWidth: '300px',
-  height: '100vh',
-  position: 'sticky',
-  top: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  background: colors.background.secondary,
-  borderRight: `1px solid ${colors.border.medium}`,
-  overflow: 'hidden',
-  zIndex: 10,
-  boxShadow: `2px 0 20px rgba(0,0,0,0.4), inset -1px 0 0 rgba(57,255,20,0.05)`,
-}
-
-const sectionHeaderStyle: React.CSSProperties = {
-  fontSize: '11px',
-  fontWeight: 700,
-  textTransform: 'uppercase' as const,
-  letterSpacing: '0.08em',
-  color: colors.text.secondary,
-  marginBottom: '8px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+const sectionTitleStyle: React.CSSProperties = {
+  fontFamily: "'Special Elite', serif",
+  fontSize: 10,
+  letterSpacing: '0.25em',
+  color: '#3a5060',
+  textTransform: 'uppercase',
+  marginBottom: 12,
 }

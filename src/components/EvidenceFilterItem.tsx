@@ -1,5 +1,6 @@
 import type { EvidenceType, EvidenceFilterState } from '../types'
 import { colors } from '../theme'
+import '../styles/animations.css'
 
 interface Props {
   evidenceType: EvidenceType
@@ -8,92 +9,116 @@ interface Props {
   includeDisabled: boolean
 }
 
-const stateConfig = {
-  off: {
-    label: 'Any',
-    icon: '○',
-  },
-  include: {
-    label: 'Include',
-    icon: '✓',
-  },
-  exclude: {
-    label: 'Exclude',
-    icon: '✕',
-  },
-} as const
-
 export function EvidenceFilterItem({ evidenceType, state, onCycle, includeDisabled }: Props) {
-  const evidenceColor = colors.evidence[evidenceType.id]
-
-  const containerStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '8px 10px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    border: `1px solid ${
-      state === 'include'
-        ? evidenceColor
-        : state === 'exclude'
-          ? colors.accent.red
-          : colors.border.subtle
-    }`,
-    background:
-      state === 'include'
-        ? `${evidenceColor}15`
-        : state === 'exclude'
-          ? `${colors.accent.red}10`
-          : 'transparent',
-    transition: 'all 0.15s ease',
-    userSelect: 'none',
-  }
-
-  const dotStyle: React.CSSProperties = {
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    background: evidenceColor,
-    flexShrink: 0,
-  }
-
-  const nameStyle: React.CSSProperties = {
-    flex: 1,
-    fontSize: '13px',
-    fontWeight: 500,
-    color:
-      state === 'include'
-        ? evidenceColor
-        : state === 'exclude'
-          ? colors.text.secondary
-          : colors.text.primary,
-    textDecoration: state === 'exclude' ? 'line-through' : 'none',
-  }
-
-  const badgeStyle: React.CSSProperties = {
-    fontSize: '11px',
-    fontWeight: 600,
-    padding: '2px 7px',
-    borderRadius: '4px',
-    background:
-      state === 'include'
-        ? evidenceColor
-        : state === 'exclude'
-          ? colors.accent.red
-          : colors.background.card,
-    color:
-      state === 'off' ? colors.text.muted : '#fff',
-    opacity: state === 'off' && includeDisabled ? 0.5 : 1,
-  }
+  const isConfirmed = state === 'include'
+  const isRuledOut = state === 'exclude'
 
   return (
-    <div style={containerStyle} onClick={onCycle} role="button" tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? onCycle() : null}>
-      <div style={dotStyle} />
-      <span style={nameStyle}>{evidenceType.shortName}</span>
-      <span style={badgeStyle}>
-        {stateConfig[state].icon} {stateConfig[state].label}
+    <div
+      onClick={onCycle}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onCycle()}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '8px 6px',
+        borderRadius: '6px',
+        cursor: 'crosshair',
+        transition: 'background 0.15s',
+        marginBottom: '2px',
+        position: 'relative',
+        userSelect: 'none',
+        background: isConfirmed
+          ? 'rgba(76,175,80,0.06)'
+          : isRuledOut
+          ? 'rgba(255,68,68,0.06)'
+          : 'transparent',
+        opacity: includeDisabled ? 0.5 : 1,
+      }}
+    >
+      {isConfirmed && (
+        <div style={{
+          position: 'absolute',
+          left: 2, right: 2, top: 2, bottom: 2,
+          borderRadius: '30px',
+          border: `1.5px solid ${colors.accent.green}`,
+          pointerEvents: 'none',
+          boxShadow: '0 0 10px rgba(76,175,80,0.3)',
+          animation: 'ovalFlicker 3s infinite',
+        }} />
+      )}
+
+      {isRuledOut && (
+        <div key={`strike-${evidenceType.id}-exclude`} style={{
+          position: 'absolute',
+          left: 8, right: 8,
+          top: '50%',
+          height: '1.5px',
+          background: colors.accent.red,
+          borderRadius: '1px',
+          boxShadow: `0 0 6px ${colors.accent.red}`,
+          transformOrigin: 'left center',
+          animation: 'strikeIn 0.25s cubic-bezier(0.22,1,0.36,1) forwards',
+          pointerEvents: 'none',
+        }} />
+      )}
+
+      <div style={{
+        width: 20,
+        height: 20,
+        borderRadius: 3,
+        border: `1.5px solid ${
+          isConfirmed ? colors.accent.green
+          : isRuledOut ? colors.accent.red
+          : colors.text.muted
+        }`,
+        background: isConfirmed
+          ? colors.accent.greenDim
+          : isRuledOut
+          ? colors.accent.redDim
+          : 'transparent',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        transition: 'all 0.2s',
+        position: 'relative',
+        boxShadow: isConfirmed
+          ? '0 0 8px rgba(76,175,80,0.4), inset 0 0 4px rgba(76,175,80,0.2)'
+          : isRuledOut
+          ? '0 0 8px rgba(255,68,68,0.3)'
+          : 'none',
+      }}>
+        {isConfirmed && (
+          <div style={{
+            width: 10, height: 10,
+            background: colors.accent.green,
+            borderRadius: '50%',
+            boxShadow: `0 0 6px ${colors.accent.green}`,
+            animation: 'pulseGreen 1.5s infinite',
+          }} />
+        )}
+        {isRuledOut && (
+          <svg viewBox="0 0 26 26" fill="none" stroke={colors.accent.red} strokeWidth="3" strokeLinecap="round" style={{ width: 16, height: 16 }}>
+            <line x1="6" y1="6" x2="20" y2="20" />
+            <line x1="20" y1="6" x2="6" y2="20" />
+          </svg>
+        )}
+      </div>
+
+      <span style={{
+        fontFamily: colors.font.mono,
+        fontSize: '12px',
+        color: isConfirmed ? colors.accent.green : isRuledOut ? colors.accent.red : colors.text.secondary,
+        transition: 'color 0.2s',
+        flex: 1,
+        lineHeight: 1.3,
+        textDecoration: isRuledOut ? 'line-through' : 'none',
+        textDecorationColor: colors.accent.red,
+      }}>
+        {evidenceType.shortName}
       </span>
     </div>
   )

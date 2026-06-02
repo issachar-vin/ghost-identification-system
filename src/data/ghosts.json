@@ -229,7 +229,11 @@
     {
       "id": "spirit",
       "name": "Spirit",
-      "evidence": ["emf5", "spiritBox", "ghostWriting"],
+      "evidence": [
+        "emf5",
+        "spiritBox",
+        "ghostWriting"
+      ],
       "strength": "None — the most common ghost type with no specific advantage",
       "weakness": "Smudge sticks are extra effective, preventing hunts for 180 seconds instead of 90",
       "huntSanityThreshold": 50,
@@ -257,7 +261,11 @@
     {
       "id": "wraith",
       "name": "Wraith",
-      "evidence": ["emf5", "spiritBox", "dotsProjector"],
+      "evidence": [
+        "emf5",
+        "spiritBox",
+        "dotsProjector"
+      ],
       "strength": "Does not leave UV footprints in salt — nearly impossible to track with salt",
       "weakness": "Leaving salt near its area generates EMF 2 instead of 3 when it passes through",
       "huntSanityThreshold": 50,
@@ -290,7 +298,11 @@
     {
       "id": "phantom",
       "name": "Phantom",
-      "evidence": ["spiritBox", "ultraviolet", "dotsProjector"],
+      "evidence": [
+        "spiritBox",
+        "ultraviolet",
+        "dotsProjector"
+      ],
       "strength": "Causes greater sanity loss when players look at it during a ghost event",
       "weakness": "Photographing the Phantom during a ghost event causes it to temporarily turn invisible",
       "huntSanityThreshold": 50,
@@ -326,7 +338,11 @@
     {
       "id": "poltergeist",
       "name": "Poltergeist",
-      "evidence": ["spiritBox", "ultraviolet", "ghostWriting"],
+      "evidence": [
+        "spiritBox",
+        "ultraviolet",
+        "ghostWriting"
+      ],
       "strength": "Can throw multiple objects at once in a wide radius",
       "weakness": "Loses power in empty rooms with few or no throwable objects nearby",
       "huntSanityThreshold": 50,
@@ -357,7 +373,11 @@
     {
       "id": "banshee",
       "name": "Banshee",
-      "evidence": ["ultraviolet", "ghostOrb", "dotsProjector"],
+      "evidence": [
+        "ultraviolet",
+        "ghostOrb",
+        "dotsProjector"
+      ],
       "strength": "Focuses exclusively on its chosen target player, ignoring others during hunts",
       "weakness": "Crucifix protection radius is 5 meters specifically for its target — easier to protect them",
       "huntSanityThreshold": 50,
@@ -395,7 +415,11 @@
     {
       "id": "jinn",
       "name": "Jinn",
-      "evidence": ["emf5", "ultraviolet", "freezingTemps"],
+      "evidence": [
+        "emf5",
+        "ultraviolet",
+        "freezingTemps"
+      ],
       "strength": "Moves at 2.5 m/s when its target is far away and the fuse box is powered on",
       "weakness": "Cannot use its speed ability when the fuse box is turned off",
       "huntSanityThreshold": 50,
@@ -426,7 +450,11 @@
     {
       "id": "mare",
       "name": "Mare",
-      "evidence": ["spiritBox", "ghostOrb", "ghostWriting"],
+      "evidence": [
+        "spiritBox",
+        "ghostOrb",
+        "ghostWriting"
+      ],
       "strength": "Hunts at 60% sanity in the dark — much earlier than the standard 50%",
       "weakness": "Hunt threshold drops to 40% when lights are on — keeping lights on is protective",
       "huntSanityThreshold": 60,
@@ -461,7 +489,11 @@
     {
       "id": "revenant",
       "name": "Revenant",
-      "evidence": ["ghostOrb", "ghostWriting", "freezingTemps"],
+      "evidence": [
+        "ghostOrb",
+        "ghostWriting",
+        "freezingTemps"
+      ],
       "strength": "Moves at 3 m/s when it detects a player — one of the fastest hunting ghosts",
       "weakness": "Travels at only 1 m/s when no player is detected — very slow while searching",
       "huntSanityThreshold": 50,
@@ -494,7 +526,11 @@
     {
       "id": "shade",
       "name": "Shade",
-      "evidence": ["emf5", "ghostWriting", "freezingTemps"],
+      "evidence": [
+        "emf5",
+        "ghostWriting",
+        "freezingTemps"
+      ],
       "strength": "Extremely difficult to gather evidence from — won't interact when players are present",
       "weakness": "Cannot initiate a hunt if any player is in the same room as it",
       "huntSanityThreshold": 35,
@@ -533,7 +569,11 @@
     {
       "id": "demon",
       "name": "Demon",
-      "evidence": ["ultraviolet", "ghostWriting", "freezingTemps"],
+      "evidence": [
+        "ultraviolet",
+        "ghostWriting",
+        "freezingTemps"
+      ],
       "strength": "Can initiate a hunt at any sanity level — even 100%",
       "weakness": "Crucifix effective range is doubled to 5 meters, making defense much easier",
       "huntSanityThreshold": 100,
@@ -571,7 +611,11 @@
     {
       "id": "yurei",
       "name": "Yurei",
-      "evidence": ["ghostOrb", "freezingTemps", "dotsProjector"],
+      "evidence": [
+        "ghostOrb",
+        "freezingTemps",
+        "dotsProjector"
+      ],
       "strength": "Applies a heavy sanity drain to players in the same room during ghost events",
       "weakness": "Smudging within its room traps it there — it cannot wander for 90 seconds",
       "huntSanityThreshold": 50,
@@ -604,7 +648,11 @@
     {
       "id": "oni",
       "name": "Oni",
-      "evidence": ["emf5", "freezingTemps", "dotsProjector"],
+      "evidence": [
+        "emf5",
+        "freezingTemps",
+        "dotsProjector"
+      ],
       "strength": "Far more active and aggressive when players are present in the ghost room",
       "weakness": "High activity rate makes it easier to locate and gather evidence",
       "huntSanityThreshold": 50,
@@ -642,7 +690,11 @@
     {
       "id": "yokai",
       "name": "Yokai",
-      "evidence": ["spiritBox", "ghostOrb", "dotsProjector"],
+      "evidence": [
+        "spiritBox",
+        "ghostOrb",
+        "dotsProjector"
+      ],
       "strength": "Talking near it raises hunt threshold to 80% — very dangerous when players speak",
       "weakness": "Can only detect players within 2.5 meters during hunts — short detection range",
       "huntSanityThreshold": 80,
@@ -676,7 +728,11 @@
     {
       "id": "hantu",
       "name": "Hantu",
-      "evidence": ["ultraviolet", "ghostOrb", "freezingTemps"],
+      "evidence": [
+        "ultraviolet",
+        "ghostOrb",
+        "freezingTemps"
+      ],
       "strength": "Moves faster in cold rooms — up to 2.7 m/s in freezing temperatures",
       "weakness": "Moves slowly in warm rooms — keeping fuse box off limits its maximum speed",
       "huntSanityThreshold": 50,
@@ -709,7 +765,11 @@
     {
       "id": "goryo",
       "name": "Goryo",
-      "evidence": ["emf5", "ultraviolet", "dotsProjector"],
+      "evidence": [
+        "emf5",
+        "ultraviolet",
+        "dotsProjector"
+      ],
       "strength": "DOTS evidence only visible through a video camera feed — never to the naked eye",
       "weakness": "Rarely strays from its home room — very limited roaming range",
       "huntSanityThreshold": 50,
@@ -742,7 +802,11 @@
     {
       "id": "myling",
       "name": "Myling",
-      "evidence": ["emf5", "ultraviolet", "ghostWriting"],
+      "evidence": [
+        "emf5",
+        "ultraviolet",
+        "ghostWriting"
+      ],
       "strength": "Very quiet during hunts — footsteps and equipment interference have a very short range",
       "weakness": "Produces frequent paranormal sounds, making it easy to locate with the Parabolic Microphone",
       "huntSanityThreshold": 50,
@@ -773,7 +837,11 @@
     {
       "id": "onryo",
       "name": "Onryo",
-      "evidence": ["spiritBox", "ghostOrb", "freezingTemps"],
+      "evidence": [
+        "spiritBox",
+        "ghostOrb",
+        "freezingTemps"
+      ],
       "strength": "Extinguishing a flame near it can trigger an immediate hunt attempt",
       "weakness": "Lit flames prevent it from hunting — candles act like a crucifix within 4 meters",
       "huntSanityThreshold": 60,
@@ -811,7 +879,11 @@
     {
       "id": "theTwins",
       "name": "The Twins",
-      "evidence": ["emf5", "spiritBox", "freezingTemps"],
+      "evidence": [
+        "emf5",
+        "spiritBox",
+        "freezingTemps"
+      ],
       "strength": "Can interact with the environment in two locations simultaneously",
       "weakness": "Either twin can start a hunt — one at 1.9× speed, the other at 0.75× speed",
       "huntSanityThreshold": 50,
@@ -842,7 +914,11 @@
     {
       "id": "raiju",
       "name": "Raiju",
-      "evidence": ["emf5", "ghostOrb", "dotsProjector"],
+      "evidence": [
+        "emf5",
+        "ghostOrb",
+        "dotsProjector"
+      ],
       "strength": "Speeds up significantly near active electronic equipment during hunts",
       "weakness": "Disrupts electronics from farther away, making its location easier to detect",
       "huntSanityThreshold": 50,
@@ -870,7 +946,11 @@
     {
       "id": "obake",
       "name": "Obake",
-      "evidence": ["emf5", "ultraviolet", "ghostOrb"],
+      "evidence": [
+        "emf5",
+        "ultraviolet",
+        "ghostOrb"
+      ],
       "strength": "Can leave unique 6-finger UV handprints and may leave no fingerprints at all",
       "weakness": "Has a small chance to reveal its true form briefly by shape-shifting during hunts",
       "huntSanityThreshold": 50,
@@ -906,8 +986,14 @@
     {
       "id": "theMimic",
       "name": "The Mimic",
-      "evidence": ["spiritBox", "ultraviolet", "freezingTemps"],
-      "fakeEvidence": ["ghostOrb"],
+      "evidence": [
+        "spiritBox",
+        "ultraviolet",
+        "freezingTemps"
+      ],
+      "fakeEvidence": [
+        "ghostOrb"
+      ],
       "strength": "Mimics behaviors, abilities, and evidence of other ghost types — extremely hard to identify",
       "weakness": "Always produces Ghost Orbs as a fake 4th evidence, revealing its deceptive nature",
       "huntSanityThreshold": 50,
@@ -940,7 +1026,11 @@
     {
       "id": "moroi",
       "name": "Moroi",
-      "evidence": ["spiritBox", "ghostWriting", "freezingTemps"],
+      "evidence": [
+        "spiritBox",
+        "ghostWriting",
+        "freezingTemps"
+      ],
       "strength": "Curses players who hear it through Spirit Box, causing doubled sanity drain",
       "weakness": "Smudge sticks blind it for 12 seconds — double the normal 6 second duration",
       "huntSanityThreshold": 50,
@@ -974,7 +1064,11 @@
     {
       "id": "deogen",
       "name": "Deogen",
-      "evidence": ["spiritBox", "ghostWriting", "dotsProjector"],
+      "evidence": [
+        "spiritBox",
+        "ghostWriting",
+        "dotsProjector"
+      ],
       "strength": "Always knows the exact location of every player — hiding is completely ineffective",
       "weakness": "Slows to 0.4 m/s when very close to a player — the slowest ghost at point-blank range",
       "huntSanityThreshold": 40,
@@ -1008,7 +1102,11 @@
     {
       "id": "thaye",
       "name": "Thaye",
-      "evidence": ["ghostOrb", "ghostWriting", "dotsProjector"],
+      "evidence": [
+        "ghostOrb",
+        "ghostWriting",
+        "dotsProjector"
+      ],
       "strength": "Starts very powerful — high hunt threshold and fast speed when young",
       "weakness": "Ages and weakens over time, becoming progressively slower and less likely to hunt",
       "huntSanityThreshold": 75,
@@ -1047,7 +1145,11 @@
     {
       "id": "obambo",
       "name": "Obambo",
-      "evidence": ["ghostWriting", "ultraviolet", "dotsProjector"],
+      "evidence": [
+        "ghostWriting",
+        "ultraviolet",
+        "dotsProjector"
+      ],
       "strength": "Hunts earlier and moves faster during its aggressive state",
       "weakness": "Easier to track and hunts later during its calm state",
       "huntSanityThreshold": 60,
@@ -1076,12 +1178,17 @@
       ],
       "interactions": {
         "huntThreshold": "early"
-      }
+      },
+      "isNew": true
     },
     {
       "id": "gallu",
       "name": "Gallu",
-      "evidence": ["emf5", "ultraviolet", "spiritBox"],
+      "evidence": [
+        "emf5",
+        "ultraviolet",
+        "spiritBox"
+      ],
       "strength": "Using protective equipment triggers an enraged state — weakening that equipment's effects",
       "weakness": "Enraged state exhausts it into a weakened state where protection becomes more effective",
       "huntSanityThreshold": 50,
@@ -1107,12 +1214,17 @@
         "Ghost seems to push through or weaken protective gear in a cyclic pattern",
         "After an aggressive phase triggered by protection use, the ghost becomes clearly weakened"
       ],
-      "interactions": {}
+      "interactions": {},
+      "isNew": true
     },
     {
       "id": "dayan",
       "name": "Dayan",
-      "evidence": ["emf5", "ghostOrb", "spiritBox"],
+      "evidence": [
+        "emf5",
+        "ghostOrb",
+        "spiritBox"
+      ],
       "strength": "Speeds up dramatically when players within 10 meters are moving during a hunt",
       "weakness": "Slows significantly when players within 10 meters stand completely still",
       "huntSanityThreshold": 50,
@@ -1140,7 +1252,8 @@
       ],
       "interactions": {
         "speedBehavior": "motion_dependent"
-      }
+      },
+      "isNew": true
     }
   ]
 }

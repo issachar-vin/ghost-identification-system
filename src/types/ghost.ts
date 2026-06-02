@@ -63,6 +63,7 @@ export type GhostInteractionOverrides = Record<string, boolean | string>
 export interface Ghost {
   id: string
   name: string
+  isNew?: boolean
   evidence: EvidenceId[]
   fakeEvidence?: EvidenceId[]
   strength: string
