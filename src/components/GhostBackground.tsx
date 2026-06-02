@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import ghostSvgUrl from '../assets/ghost.svg'
 import '../styles/animations.css'
 
 // CSS filter: invert() converts the black fill to white,
@@ -149,7 +150,7 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
     >
       <img
         ref={imgRef}
-        src="/ghost.svg"
+        src={ghostSvgUrl}
         alt=""
         style={{
           width: '100%',
