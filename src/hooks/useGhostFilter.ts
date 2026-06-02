@@ -81,7 +81,7 @@ export function useGhostFilter(ghosts: Ghost[], interactionDefs: InteractionDefi
       }
 
       return true
-    }).sort((a, b) => a.name.localeCompare(b.name))
+    })
   }, [ghosts, evidenceFilters, interactionFilters, interactionDefs])
 
   return {
