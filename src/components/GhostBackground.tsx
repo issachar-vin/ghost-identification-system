@@ -47,6 +47,7 @@ function makeGhost(id: number): GhostInstance {
 // to avoid 60fps React re-renders.
 function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
   // Keep dying flag accessible inside the rAF closure without restarting it
   const dyingRef = useRef(dying)
   useEffect(() => { dyingRef.current = dying }, [dying])
@@ -115,6 +116,12 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
       el.style.transform = `translate(${x - half}px, ${y - half}px)`
       el.style.opacity = String(opacity)
 
+      // Flip the sprite horizontally when moving right (heading within ±90° of east)
+      if (imgRef.current) {
+        const facingRight = Math.cos(heading) > 0
+        imgRef.current.style.transform = facingRight ? 'scaleX(-1)' : 'none'
+      }
+
       raf = requestAnimationFrame(tick)
     }
 
@@ -141,6 +148,7 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
       }}
     >
       <img
+        ref={imgRef}
         src="/ghost.svg"
         alt=""
         style={{
