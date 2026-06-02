@@ -1,54 +1,212 @@
+import { useEffect, useRef, useState } from 'react'
 import '../styles/animations.css'
 
-// SVG ghost silhouette path
-const GHOST_PATH =
-  'M12 2C7.59 2 4 5.59 4 10v10l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V10c0-4.41-3.59-8-8-8zm-2 11c-.83 0-1.5-.67-1.5-1.5S9.17 10 10 10s1.5.67 1.5 1.5S10.83 13 10 13zm4 0c-.83 0-1.5-.67-1.5-1.5S13.17 10 14 10s1.5.67 1.5 1.5S14.83 13 14 13z'
+// CSS filter: invert() converts the black fill to white,
+// double drop-shadow creates the atmospheric blue glow.
+const GHOST_FILTER =
+  'invert(1) drop-shadow(0 0 6px rgba(79,195,247,0.9)) drop-shadow(0 0 18px rgba(79,195,247,0.4))'
 
-const ghosts: Array<{
-  top: string
-  left: string
-  size: number
-  animation: string
-  delay: string
-  duration: string
-}> = [
-  { top: '10%',  left: '15%', size: 80,  animation: 'drift-1', delay: '0s',   duration: '28s' },
-  { top: '30%',  left: '70%', size: 60,  animation: 'drift-2', delay: '5s',   duration: '34s' },
-  { top: '60%',  left: '40%', size: 100, animation: 'drift-3', delay: '12s',  duration: '40s' },
-  { top: '80%',  left: '85%', size: 55,  animation: 'drift-1', delay: '18s',  duration: '32s' },
-  { top: '50%',  left: '5%',  size: 70,  animation: 'drift-2', delay: '25s',  duration: '38s' },
-  { top: '20%',  left: '50%', size: 90,  animation: 'drift-3', delay: '8s',   duration: '45s' },
-]
+const MAX_CONCURRENT = 5
+const FADE_IN_MS = 350
+const FADE_OUT_MS = 600
+// Max angular velocity (radians/frame at 60fps) — controls how tight turns can be
+const MAX_ANG_VEL = 0.022
+
+interface GhostInstance {
+  id: number
+  startXPct: number    // 5–90
+  startYPct: number    // 5–85
+  size: number         // px
+  maxOpacity: number   // 0.07–0.18
+  speed: number        // px per frame at ~60fps
+  turnChance: number   // probability per frame of nudging angular velocity
+  flickerDuration: string
+  lifetime: number     // ms
+}
+
+function rand(min: number, max: number) {
+  return min + Math.random() * (max - min)
+}
+
+function makeGhost(id: number): GhostInstance {
+  return {
+    id,
+    startXPct: rand(5, 90),
+    startYPct: rand(5, 85),
+    size: rand(120, 320),
+    maxOpacity: rand(0.07, 0.18),
+    speed: rand(0.3, 1.4),
+    // Higher turnChance → tighter wander, lower → straighter paths
+    turnChance: rand(0.012, 0.05),
+    flickerDuration: `${rand(0.5, 2.2).toFixed(2)}s`,
+    lifetime: rand(1000, 10000),
+  }
+}
+
+// Each silhouette manages its own rAF loop and writes directly to the DOM
+// to avoid 60fps React re-renders.
+function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolean }) {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+  // Keep dying flag accessible inside the rAF closure without restarting it
+  const dyingRef = useRef(dying)
+  useEffect(() => { dyingRef.current = dying }, [dying])
+
+  useEffect(() => {
+    const el = wrapperRef.current
+    if (!el) return
+    const container = el.parentElement
+    if (!container) return
+
+    const half = ghost.size / 2
+    let x = (ghost.startXPct / 100) * (container.offsetWidth || 800)
+    let y = (ghost.startYPct / 100) * (container.offsetHeight || 600)
+    let heading = Math.random() * Math.PI * 2   // initial random direction
+    let angularVel = 0                           // current turning rate
+    let dyingStartTime: number | null = null
+    let startTime: number | null = null
+    let raf: number
+
+    function tick(timestamp: number) {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+
+      // Latch the moment dying begins so fade-out is timed from there
+      if (dyingRef.current && dyingStartTime === null) {
+        dyingStartTime = timestamp
+      }
+
+      // ── Opacity envelope ──────────────────────────────────────────────
+      let opacity: number
+      if (dyingStartTime !== null) {
+        const t = (timestamp - dyingStartTime) / FADE_OUT_MS
+        opacity = Math.max(0, ghost.maxOpacity * (1 - t))
+        if (opacity <= 0) {
+          cancelAnimationFrame(raf)
+          return
+        }
+      } else if (elapsed < FADE_IN_MS) {
+        opacity = ghost.maxOpacity * (elapsed / FADE_IN_MS)
+      } else {
+        opacity = ghost.maxOpacity
+      }
+
+      // ── Wander ────────────────────────────────────────────────────────
+      // Randomly nudge angular velocity → creates smooth, organic curves
+      if (Math.random() < ghost.turnChance) {
+        angularVel += (Math.random() * 2 - 1) * 0.055
+      }
+      // Clamp to max turn rate, then dampen — turns ease out naturally
+      angularVel = Math.max(-MAX_ANG_VEL, Math.min(MAX_ANG_VEL, angularVel))
+      angularVel *= 0.97
+
+      heading += angularVel
+      x += Math.cos(heading) * ghost.speed
+      y += Math.sin(heading) * ghost.speed
+
+      // Wrap at container edges so ghosts re-enter from the other side
+      const w = container.offsetWidth
+      const h = container.offsetHeight
+      if (x < -half) x = w + half
+      if (x > w + half) x = -half
+      if (y < -half) y = h + half
+      if (y > h + half) y = -half
+
+      // Write directly to DOM — no setState, no re-render
+      el.style.transform = `translate(${x - half}px, ${y - half}px)`
+      el.style.opacity = String(opacity)
+
+      // Flip the sprite horizontally when moving right (heading within ±90° of east)
+      if (imgRef.current) {
+        const facingRight = Math.cos(heading) > 0
+        imgRef.current.style.transform = facingRight ? 'scaleX(-1)' : 'none'
+      }
+
+      raf = requestAnimationFrame(tick)
+    }
+
+    // Initial position before first frame
+    el.style.transform = `translate(${x - half}px, ${y - half}px)`
+    el.style.opacity = '0'
+    raf = requestAnimationFrame(tick)
+
+    return () => cancelAnimationFrame(raf)
+  }, [ghost]) // intentionally omit `dying` — handled via dyingRef
+
+  return (
+    <div
+      ref={wrapperRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: ghost.size,
+        height: ghost.size,
+        opacity: 0,
+        pointerEvents: 'none',
+        willChange: 'transform, opacity',
+      }}
+    >
+      <img
+        ref={imgRef}
+        src="/ghost.svg"
+        alt=""
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          filter: GHOST_FILTER,
+          animation: `ghostFlicker ${ghost.flickerDuration} ease-in-out infinite`,
+        }}
+      />
+    </div>
+  )
+}
 
 export function GhostBackground() {
+  const [ghosts, setGhosts] = useState<GhostInstance[]>([])
+  const [dyingIds, setDyingIds] = useState<Set<number>>(new Set())
+  const nextId = useRef(0)
+  const activeCount = useRef(0)
+
+  useEffect(() => {
+    let spawnTimer: ReturnType<typeof setTimeout>
+
+    function spawnGhost() {
+      if (activeCount.current < MAX_CONCURRENT) {
+        const ghost = makeGhost(++nextId.current)
+        activeCount.current++
+        setGhosts((prev) => [...prev, ghost])
+
+        setTimeout(() => {
+          setDyingIds((prev) => new Set([...prev, ghost.id]))
+        }, ghost.lifetime)
+
+        setTimeout(() => {
+          activeCount.current--
+          setGhosts((prev) => prev.filter((g) => g.id !== ghost.id))
+          setDyingIds((prev) => {
+            const s = new Set(prev)
+            s.delete(ghost.id)
+            return s
+          })
+        }, ghost.lifetime + FADE_OUT_MS + 100)
+      }
+
+      spawnTimer = setTimeout(spawnGhost, rand(3000, 7000))
+    }
+
+    spawnTimer = setTimeout(spawnGhost, rand(400, 1500))
+    return () => clearTimeout(spawnTimer)
+  }, [])
+
   return (
     <div
       aria-hidden="true"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 0,
-        overflow: 'hidden',
-      }}
+      style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}
     >
-      {ghosts.map((g, i) => (
-        <svg
-          key={i}
-          viewBox="0 0 24 24"
-          style={{
-            position: 'absolute',
-            top: g.top,
-            left: g.left,
-            width: g.size,
-            height: g.size,
-            fill: 'rgba(57, 255, 20, 1)',
-            animation: `${g.animation} ${g.duration} ${g.delay} infinite linear`,
-            willChange: 'transform, opacity',
-          }}
-        >
-          <path d={GHOST_PATH} />
-        </svg>
+      {ghosts.map((ghost) => (
+        <GhostSilhouette key={ghost.id} ghost={ghost} dying={dyingIds.has(ghost.id)} />
       ))}
     </div>
   )

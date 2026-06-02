@@ -15,56 +15,41 @@ export function ToggleFilter({ definition, value, onChange }: Props) {
   ]
 
   return (
-    <div style={{ marginBottom: '14px' }}>
-      <div style={{ fontSize: '12px', fontWeight: 600, color: colors.text.secondary, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.secondary, textTransform: 'uppercase', marginBottom: 6 }}>
         {definition.label}
       </div>
-      <div style={{ display: 'flex', gap: '4px' }}>
-        {options.map((opt) => (
-          <button
-            key={String(opt.value)}
-            onClick={() => onChange(opt.value)}
-            style={{
-              flex: 1,
-              padding: '5px 6px',
-              fontSize: '11px',
-              fontWeight: 600,
-              borderRadius: '6px',
-              border: `1px solid ${
-                value === opt.value
-                  ? opt.value === null
-                    ? colors.border.medium
-                    : opt.value
-                      ? colors.accent.teal
-                      : colors.accent.red
-                  : colors.border.subtle
-              }`,
-              background:
-                value === opt.value
-                  ? opt.value === null
-                    ? colors.background.cardHover
-                    : opt.value
-                      ? `${colors.accent.teal}20`
-                      : `${colors.accent.red}20`
-                  : 'transparent',
-              color:
-                value === opt.value
-                  ? opt.value === null
-                    ? colors.text.primary
-                    : opt.value
-                      ? colors.accent.teal
-                      : colors.accent.red
-                  : colors.text.muted,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {opt.label}
-          </button>
-        ))}
+      <div style={{ display: 'flex', gap: 4 }}>
+        {options.map((opt) => {
+          const active = value === opt.value
+          const activeColor = opt.value === null ? colors.accent.blue
+            : opt.value ? colors.accent.green
+            : colors.accent.red
+          return (
+            <button
+              key={String(opt.value)}
+              onClick={() => onChange(opt.value)}
+              style={{
+                flex: 1,
+                padding: '5px 4px',
+                fontFamily: colors.font.mono,
+                fontSize: 10,
+                borderRadius: 4,
+                border: `1px solid ${active ? activeColor : colors.border.panel}`,
+                background: active ? `${activeColor}15` : 'transparent',
+                color: active ? activeColor : colors.text.muted,
+                cursor: 'crosshair',
+                transition: 'all 0.15s',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                boxShadow: active ? `0 0 8px ${activeColor}30` : 'none',
+              }}
+            >
+              {opt.label}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

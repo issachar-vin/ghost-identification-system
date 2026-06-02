@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { Ghost, InteractionDefinition, EvidenceType } from '../types'
 import { colors } from '../theme'
+import '../styles/animations.css'
 
 interface Props {
   ghost: Ghost | null
@@ -81,8 +82,8 @@ export function GhostModal({ ghost, evidenceTypes, interactionDefs, onClose }: P
           }}
         >
           <div>
-            <h2 style={{ fontSize: '22px', fontWeight: 700, color: colors.text.primary, margin: '0 0 8px' }}>
-              {ghost.name}
+            <h2 style={{ fontFamily: colors.font.display, fontSize: '26px', fontWeight: 400, color: colors.accent.blue, margin: '0 0 8px', letterSpacing: '0.05em', textShadow: '0 0 16px rgba(79,195,247,0.4)' }}>
+              {ghost.name}{ghost.isNew && <span style={{ fontFamily: colors.font.mono, fontSize: 10, marginLeft: 10, padding: '2px 8px', border: `1px solid ${colors.accent.newGlow}`, color: colors.accent.newGlow, borderRadius: 20, verticalAlign: 'middle', animation: 'newPulse 2s infinite' }}>NEW</span>}
             </h2>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               {ghost.evidence.map((eid) => {
