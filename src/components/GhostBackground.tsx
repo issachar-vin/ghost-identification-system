@@ -142,7 +142,7 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
       }}
     >
       <img
-        src="/ghost.svg"
+        src="/bakemon.svg"
         alt=""
         style={{
           width: '100%',
