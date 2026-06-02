@@ -8,12 +8,11 @@ body {
   font-family: 'Crimson Pro', serif;
   font-size: 15px;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
   cursor: crosshair;
-  /* Scanlines on the body background — only visible in margins around the shell */
 }
 
-/* Scanlines — low z-index so they sit behind the app shell */
+/* Scanlines — full screen, always visible */
 body::before {
   content: '';
   position: fixed;
@@ -26,17 +25,17 @@ body::before {
     rgba(0,0,0,0.18) 4px
   );
   pointer-events: none;
-  z-index: 0;
+  z-index: 9998;
 }
 
-/* Vignette — low z-index, only darkens the margins around the shell */
+/* Vignette — full screen */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
   pointer-events: none;
-  z-index: 0;
+  z-index: 9997;
 }
 
 #root {
@@ -48,23 +47,19 @@ body::after {
   z-index: 1;
 }
 
-/* ── App shell: centered 16:9 container ─────────────────────────────────── */
+/* ── App shell: width-constrained, full height, frameless ───────────────── */
 .app-shell {
-  /* Width = the smaller of: 95% viewport width, or 16/9 of viewport height */
-  width: min(calc(100vw - 32px), calc((100vh - 32px) * 16 / 9));
+  width: min(calc(100vw - 32px), calc(100vh * 16 / 9));
   max-width: 1800px;
-  height: calc(100vh - 32px);
-  background: #080c10;
-  border: 1px solid rgba(79, 195, 247, 0.07);
-  border-radius: 4px;
+  height: 100vh;        /* full height — no margin top/bottom */
+  background: transparent;   /* ghost background is the only background */
+  border: none;
+  border-radius: 0;
   overflow: hidden;
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,0.8),
-    0 8px 60px rgba(0,0,0,0.7);
 }
 
 /* Inner layout row */
@@ -73,6 +68,7 @@ body::after {
   flex: 1;
   overflow: hidden;
   height: 100%;
+  min-height: 0;
 }
 
 /* ── Mobile overlay backdrop ─────────────────────────────────────────────── */
@@ -81,28 +77,18 @@ body::after {
 }
 
 /* ── Responsive breakpoints ─────────────────────────────────────────────── */
-
-/* Tablet: let the shell take more width, allow some margin */
 @media (max-width: 1100px) {
   .app-shell {
-    width: calc(100vw - 16px);
-    height: calc(100vh - 16px);
-    border-radius: 3px;
+    width: 100vw;
   }
 }
 
-/* Mobile: full screen, no margin, no border */
 @media (max-width: 768px) {
-  #root {
-    align-items: flex-start;
-  }
+  #root { align-items: flex-start; }
 
   .app-shell {
     width: 100vw;
     height: 100dvh;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
   }
 
   .sidebar-backdrop {
@@ -117,6 +103,6 @@ body::after {
 button { cursor: crosshair; font-family: inherit; }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #080c10; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #1a4a60; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #2a6a80; }

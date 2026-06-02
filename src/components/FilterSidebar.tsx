@@ -46,8 +46,10 @@ export function FilterSidebar({
       bottom: 0,
       display: 'flex',
       flexDirection: 'column',
-      background: colors.background.panel,
-      borderRight: `1px solid ${colors.border.panel}`,
+      background: 'rgba(8, 12, 16, 0.72)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      borderRight: `1px solid rgba(79, 195, 247, 0.08)`,
       overflow: 'hidden',
       zIndex: isMobileOverlay ? 50 : 10,
       transform: isMobileOverlay
@@ -57,7 +59,7 @@ export function FilterSidebar({
     }}>
 
       {/* Header */}
-      <div style={{ padding: '20px 18px 16px', borderBottom: `1px solid ${colors.border.panel}`, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+      <div style={{ padding: '20px 18px 16px', borderBottom: `1px solid rgba(79, 195, 247, 0.07)`, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
         <div style={{
           fontFamily: colors.font.display,
@@ -127,7 +129,7 @@ export function FilterSidebar({
         fontSize: 9,
         color: colors.text.muted,
         lineHeight: 1.7,
-        borderTop: `1px solid ${colors.border.panel}`,
+        borderTop: `1px solid rgba(79, 195, 247, 0.07)`,
       }}>
         CLICK ONCE — confirmed<br />
         CLICK TWICE — ruled out<br />
@@ -135,7 +137,7 @@ export function FilterSidebar({
       </div>
 
       {/* Legend */}
-      <div style={{ padding: '10px 18px 12px', borderTop: `1px solid ${colors.border.panel}` }}>
+      <div style={{ padding: '10px 18px 12px', borderTop: `1px solid rgba(79, 195, 247, 0.07)` }}>
         <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.muted, textTransform: 'uppercase', marginBottom: 8 }}>Key</div>
         {[
           { color: colors.accent.green, label: 'Evidence confirmed' },

@@ -75,14 +75,17 @@ export default function App() {
             />
           )}
 
-          <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+          <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0, background: 'transparent' }}>
             {/* Header */}
             <div style={{
               padding: isMobile ? '16px 20px 14px' : '28px 32px 20px',
-              borderBottom: `1px solid ${colors.border.panel}`,
+              borderBottom: `1px solid rgba(79, 195, 247, 0.07)`,
               position: 'relative',
               overflow: 'hidden',
               flexShrink: 0,
+              background: 'rgba(8, 12, 16, 0.55)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
             }}>
               <div style={{
                 position: 'absolute', inset: 0,

@@ -80,8 +80,12 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: hovered ? colors.background.cardHover : colors.background.card,
-        border: `1px solid ${hovered ? '#2a4060' : colors.border.card}`,
+        background: hovered
+          ? 'rgba(16, 24, 34, 0.82)'
+          : 'rgba(10, 16, 24, 0.65)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+        border: `1px solid ${hovered ? 'rgba(79,195,247,0.25)' : colors.border.card}`,
         borderRadius: 8,
         padding: 16,
         cursor: 'crosshair',
