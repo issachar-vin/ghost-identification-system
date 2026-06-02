@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/animations.css'
 
-// brightness(0) → pure black, invert(1) → pure white outline,
-// drop-shadow creates the atmospheric blue glow around the white outline.
-const GHOST_FILTER =
-  'brightness(0) invert(1) drop-shadow(0 0 8px rgba(79,195,247,0.9)) drop-shadow(0 0 16px rgba(79,195,247,0.5))'
+const GHOST_PATH =
+  'M12 2C7.59 2 4 5.59 4 10v10l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V10c0-4.41-3.59-8-8-8zm-2 11c-.83 0-1.5-.67-1.5-1.5S9.17 10 10 10s1.5.67 1.5 1.5S10.83 13 10 13zm4 0c-.83 0-1.5-.67-1.5-1.5S13.17 10 14 10s1.5.67 1.5 1.5S14.83 13 14 13z'
 
 const MAX_CONCURRENT = 5
 const FADE_IN_MS = 350
@@ -140,17 +138,18 @@ function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolea
         willChange: 'transform, opacity',
       }}
     >
-      <img
-        src="/bakemon.svg"
-        alt=""
+      <svg
+        viewBox="0 0 24 24"
         style={{
           width: '100%',
           height: '100%',
-          filter: GHOST_FILTER,
+          fill: '#a8dfff',
+          filter: 'drop-shadow(0 0 6px rgba(79,195,247,0.8))',
           animation: `ghostFlicker ${ghost.flickerDuration} ease-in-out infinite`,
-          display: 'block',
         }}
-      />
+      >
+        <path d={GHOST_PATH} />
+      </svg>
     </div>
   )
 }
