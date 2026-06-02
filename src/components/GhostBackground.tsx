@@ -7,7 +7,7 @@ import '../styles/animations.css'
 const GHOST_FILTER =
   'invert(1) drop-shadow(0 0 6px rgba(79,195,247,0.9)) drop-shadow(0 0 18px rgba(79,195,247,0.4))'
 
-const MAX_CONCURRENT = 5
+const MAX_CONCURRENT = 12
 const FADE_IN_MS = 350
 const FADE_OUT_MS = 600
 // Max angular velocity (radians/frame at 60fps) — controls how tight turns can be
@@ -32,8 +32,8 @@ function rand(min: number, max: number) {
 function makeGhost(id: number): GhostInstance {
   return {
     id,
-    startXPct: rand(5, 90),
-    startYPct: rand(5, 85),
+    startXPct: rand(0, 100),
+    startYPct: rand(0, 100),
     size: rand(120, 320),
     maxOpacity: rand(0.07, 0.18),
     speed: rand(0.3, 1.4),
@@ -194,10 +194,10 @@ export function GhostBackground() {
         }, ghost.lifetime + FADE_OUT_MS + 100)
       }
 
-      spawnTimer = setTimeout(spawnGhost, rand(3000, 7000))
+      spawnTimer = setTimeout(spawnGhost, rand(600, 1800))
     }
 
-    spawnTimer = setTimeout(spawnGhost, rand(400, 1500))
+    spawnTimer = setTimeout(spawnGhost, rand(100, 400))
     return () => clearTimeout(spawnTimer)
   }, [])
 
