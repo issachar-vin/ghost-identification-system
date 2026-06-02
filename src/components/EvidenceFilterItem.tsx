@@ -110,8 +110,8 @@ export function EvidenceFilterItem({ evidenceType, state, onCycle, includeDisabl
 
       <span style={{
         fontFamily: colors.font.mono,
-        fontSize: '12px',
-        color: isConfirmed ? colors.accent.green : isRuledOut ? colors.accent.red : colors.text.secondary,
+        fontSize: '13px',
+        color: isConfirmed ? colors.accent.green : isRuledOut ? colors.accent.red : colors.text.primary,
         transition: 'color 0.2s',
         flex: 1,
         lineHeight: 1.3,

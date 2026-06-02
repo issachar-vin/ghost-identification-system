@@ -4,19 +4,22 @@ import '../styles/animations.css'
 const GHOST_PATH =
   'M12 2C7.59 2 4 5.59 4 10v10l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V10c0-4.41-3.59-8-8-8zm-2 11c-.83 0-1.5-.67-1.5-1.5S9.17 10 10 10s1.5.67 1.5 1.5S10.83 13 10 13zm4 0c-.83 0-1.5-.67-1.5-1.5S13.17 10 14 10s1.5.67 1.5 1.5S14.83 13 14 13z'
 
-const MAX_CONCURRENT = 4
+const MAX_CONCURRENT = 5
+const FADE_IN_MS = 350
+const FADE_OUT_MS = 600
+// Max angular velocity (radians/frame at 60fps) — controls how tight turns can be
+const MAX_ANG_VEL = 0.022
 
 interface GhostInstance {
   id: number
-  x: number           // % from left
-  y: number           // % from top
-  size: number        // px
-  maxOpacity: number  // 0.02 – 0.07
-  driftX: number      // px to drift over lifetime
-  driftY: number      // px to drift over lifetime
-  rotation: number    // deg
+  startXPct: number    // 5–90
+  startYPct: number    // 5–85
+  size: number         // px
+  maxOpacity: number   // 0.07–0.18
+  speed: number        // px per frame at ~60fps
+  turnChance: number   // probability per frame of nudging angular velocity
   flickerDuration: string
-  lifetime: number    // ms
+  lifetime: number     // ms
 }
 
 function rand(min: number, max: number) {
@@ -26,60 +29,122 @@ function rand(min: number, max: number) {
 function makeGhost(id: number): GhostInstance {
   return {
     id,
-    x: rand(3, 90),
-    y: rand(3, 85),
-    size: rand(35, 110),
-    maxOpacity: rand(0.025, 0.07),
-    driftX: (Math.random() < 0.5 ? -1 : 1) * rand(30, 90),
-    driftY: -rand(20, 70),
-    rotation: rand(-20, 20),
-    flickerDuration: `${rand(0.6, 2.4).toFixed(2)}s`,
+    startXPct: rand(5, 90),
+    startYPct: rand(5, 85),
+    size: rand(40, 100),
+    maxOpacity: rand(0.07, 0.18),
+    speed: rand(0.3, 1.4),
+    // Higher turnChance → tighter wander, lower → straighter paths
+    turnChance: rand(0.012, 0.05),
+    flickerDuration: `${rand(0.5, 2.2).toFixed(2)}s`,
     lifetime: rand(1000, 10000),
   }
 }
 
-// Sub-component so each ghost has its own mount-time effect for fade-in
+// Each silhouette manages its own rAF loop and writes directly to the DOM
+// to avoid 60fps React re-renders.
 function GhostSilhouette({ ghost, dying }: { ghost: GhostInstance; dying: boolean }) {
-  const [active, setActive] = useState(false)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  // Keep dying flag accessible inside the rAF closure without restarting it
+  const dyingRef = useRef(dying)
+  useEffect(() => { dyingRef.current = dying }, [dying])
 
   useEffect(() => {
-    // Double-RAF ensures the CSS transition fires after first paint
-    const raf1 = requestAnimationFrame(() => {
-      const raf2 = requestAnimationFrame(() => setActive(true))
-      return () => cancelAnimationFrame(raf2)
-    })
-    return () => cancelAnimationFrame(raf1)
-  }, [])
+    const el = wrapperRef.current
+    if (!el) return
+    const container = el.parentElement
+    if (!container) return
 
-  const fadeDuration = dying ? '0.6s' : '0.4s'
-  const targetOpacity = dying ? 0 : active ? ghost.maxOpacity : 0
+    const half = ghost.size / 2
+    let x = (ghost.startXPct / 100) * (container.offsetWidth || 800)
+    let y = (ghost.startYPct / 100) * (container.offsetHeight || 600)
+    let heading = Math.random() * Math.PI * 2   // initial random direction
+    let angularVel = 0                           // current turning rate
+    let dyingStartTime: number | null = null
+    let startTime: number | null = null
+    let raf: number
+
+    function tick(timestamp: number) {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+
+      // Latch the moment dying begins so fade-out is timed from there
+      if (dyingRef.current && dyingStartTime === null) {
+        dyingStartTime = timestamp
+      }
+
+      // ── Opacity envelope ──────────────────────────────────────────────
+      let opacity: number
+      if (dyingStartTime !== null) {
+        const t = (timestamp - dyingStartTime) / FADE_OUT_MS
+        opacity = Math.max(0, ghost.maxOpacity * (1 - t))
+        if (opacity <= 0) {
+          cancelAnimationFrame(raf)
+          return
+        }
+      } else if (elapsed < FADE_IN_MS) {
+        opacity = ghost.maxOpacity * (elapsed / FADE_IN_MS)
+      } else {
+        opacity = ghost.maxOpacity
+      }
+
+      // ── Wander ────────────────────────────────────────────────────────
+      // Randomly nudge angular velocity → creates smooth, organic curves
+      if (Math.random() < ghost.turnChance) {
+        angularVel += (Math.random() * 2 - 1) * 0.055
+      }
+      // Clamp to max turn rate, then dampen — turns ease out naturally
+      angularVel = Math.max(-MAX_ANG_VEL, Math.min(MAX_ANG_VEL, angularVel))
+      angularVel *= 0.97
+
+      heading += angularVel
+      x += Math.cos(heading) * ghost.speed
+      y += Math.sin(heading) * ghost.speed
+
+      // Wrap at container edges so ghosts re-enter from the other side
+      const w = container.offsetWidth
+      const h = container.offsetHeight
+      if (x < -half) x = w + half
+      if (x > w + half) x = -half
+      if (y < -half) y = h + half
+      if (y > h + half) y = -half
+
+      // Write directly to DOM — no setState, no re-render
+      el.style.transform = `translate(${x - half}px, ${y - half}px)`
+      el.style.opacity = String(opacity)
+
+      raf = requestAnimationFrame(tick)
+    }
+
+    // Initial position before first frame
+    el.style.transform = `translate(${x - half}px, ${y - half}px)`
+    el.style.opacity = '0'
+    raf = requestAnimationFrame(tick)
+
+    return () => cancelAnimationFrame(raf)
+  }, [ghost]) // intentionally omit `dying` — handled via dyingRef
 
   return (
-    // Wrapper: controls base opacity and drift
     <div
+      ref={wrapperRef}
       style={{
         position: 'absolute',
-        left: `${ghost.x}%`,
-        top: `${ghost.y}%`,
+        top: 0,
+        left: 0,
         width: ghost.size,
         height: ghost.size,
-        opacity: targetOpacity,
-        transform: active && !dying
-          ? `translate(${ghost.driftX}px, ${ghost.driftY}px) rotate(${ghost.rotation}deg)`
-          : 'translate(0,0) rotate(0deg)',
-        transition: `opacity ${fadeDuration} ease, transform ${ghost.lifetime / 1000}s linear`,
-        willChange: 'opacity, transform',
+        opacity: 0,
         pointerEvents: 'none',
+        willChange: 'transform, opacity',
       }}
     >
-      {/* SVG: only handles the flicker animation — opacity is 0..1 relative to wrapper */}
       <svg
         viewBox="0 0 24 24"
         style={{
           width: '100%',
           height: '100%',
-          fill: '#4fc3f7',
-          filter: 'blur(0.4px)',
+          fill: '#a8dfff',
+          filter: 'blur(0.3px) drop-shadow(0 0 5px rgba(79, 195, 247, 0.7))',
           animation: `ghostFlicker ${ghost.flickerDuration} ease-in-out infinite`,
         }}
       >
@@ -102,15 +167,12 @@ export function GhostBackground() {
       if (activeCount.current < MAX_CONCURRENT) {
         const ghost = makeGhost(++nextId.current)
         activeCount.current++
-
         setGhosts((prev) => [...prev, ghost])
 
-        // Begin fade-out after lifetime
         setTimeout(() => {
           setDyingIds((prev) => new Set([...prev, ghost.id]))
         }, ghost.lifetime)
 
-        // Remove from DOM after fade-out completes
         setTimeout(() => {
           activeCount.current--
           setGhosts((prev) => prev.filter((g) => g.id !== ghost.id))
@@ -119,16 +181,13 @@ export function GhostBackground() {
             s.delete(ghost.id)
             return s
           })
-        }, ghost.lifetime + 650)
+        }, ghost.lifetime + FADE_OUT_MS + 100)
       }
 
-      // Schedule next spawn: 3–7 seconds
       spawnTimer = setTimeout(spawnGhost, rand(3000, 7000))
     }
 
-    // Stagger the first spawn slightly
     spawnTimer = setTimeout(spawnGhost, rand(400, 1500))
-
     return () => clearTimeout(spawnTimer)
   }, [])
 

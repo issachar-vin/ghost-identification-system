@@ -105,21 +105,26 @@ export function FilterSidebar({
           ))}
         </div>
 
-        {/* Behaviors */}
+        {/* Behaviors — toggles first (horizontal), then categories (vertical) */}
         <div style={{ ...sectionTitleStyle, marginTop: 16 }}>Behaviors</div>
-        {interactionDefs.map((def) => {
-          const val = interactionFilters[def.id] ?? null
-          if (def.filterType === 'toggle') {
+        {interactionDefs
+          .filter((def) => def.filterType === 'toggle')
+          .map((def) => {
+            const val = interactionFilters[def.id] ?? null
             return (
-              <ToggleFilter key={def.id} definition={def} value={val as boolean | null}
-                onChange={(v) => onSetInteraction(def.id, v)} />
+              <ToggleFilter key={def.id} definition={def as import('../types').ToggleInteraction}
+                value={val as boolean | null} onChange={(v) => onSetInteraction(def.id, v)} />
             )
-          }
-          return (
-            <CategoryFilter key={def.id} definition={def} value={val as string | null}
-              onChange={(v) => onSetInteraction(def.id, v)} />
-          )
-        })}
+          })}
+        {interactionDefs
+          .filter((def) => def.filterType === 'category')
+          .map((def) => {
+            const val = interactionFilters[def.id] ?? null
+            return (
+              <CategoryFilter key={def.id} definition={def as import('../types').CategoryInteraction}
+                value={val as string | null} onChange={(v) => onSetInteraction(def.id, v)} />
+            )
+          })}
       </div>
 
       {/* Hint */}
@@ -194,7 +199,7 @@ const sectionTitleStyle: React.CSSProperties = {
   fontFamily: "'Special Elite', serif",
   fontSize: 10,
   letterSpacing: '0.25em',
-  color: '#3a5060',
+  color: '#5a8aaa',
   textTransform: 'uppercase',
   marginBottom: 12,
 }

@@ -138,7 +138,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
         <div style={{
           fontFamily: colors.font.display,
-          fontSize: 21,
+          fontSize: 23,
           color: colors.accent.blue,
           letterSpacing: '0.05em',
           textShadow: hovered ? '0 0 12px rgba(79,195,247,0.4)' : '0 0 12px rgba(79,195,247,0.2)',
@@ -236,7 +236,7 @@ export function GhostCard({ ghost, evidenceTypes, evidenceFilters, interactionDe
         {topClues.map((clue, i) => (
           <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: colors.text.muted, flexShrink: 0, marginTop: 6 }} />
-            <div style={{ fontFamily: colors.font.body, fontSize: 14, color: '#7a9ab0', lineHeight: 1.5, fontStyle: 'italic' }}>
+            <div style={{ fontFamily: colors.font.body, fontSize: 15, color: '#8ab8cc', lineHeight: 1.5, fontStyle: 'italic' }}>
               {clue}
             </div>
           </div>

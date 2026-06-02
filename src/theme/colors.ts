@@ -9,9 +9,9 @@ export const colors = {
     overlay: 'rgba(4, 8, 18, 0.92)',
   },
   text: {
-    primary: '#c8dce8',
-    secondary: '#5a7a90',
-    muted: '#3a5060',
+    primary: '#d8eaf4',
+    secondary: '#7aa8c0',
+    muted: '#4a7090',
     accent: '#4fc3f7',
   },
   accent: {

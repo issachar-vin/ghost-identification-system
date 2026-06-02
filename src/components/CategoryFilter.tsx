@@ -10,7 +10,7 @@ interface Props {
 export function CategoryFilter({ definition, value, onChange }: Props) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.muted, textTransform: 'uppercase', marginBottom: 6 }}>
+      <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.secondary, textTransform: 'uppercase', marginBottom: 6 }}>
         {definition.label}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
