@@ -9,23 +9,18 @@ interface Props {
 
 export function CategoryFilter({ definition, value, onChange }: Props) {
   return (
-    <div style={{ marginBottom: '14px' }}>
-      <div style={{ fontSize: '12px', fontWeight: 600, color: colors.text.secondary, marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontFamily: colors.font.display, fontSize: 9, letterSpacing: '0.2em', color: colors.text.muted, textTransform: 'uppercase', marginBottom: 6 }}>
         {definition.label}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-        <button
-          onClick={() => onChange(null)}
-          style={optionStyle(value === null, null)}
-        >
-          Any
-        </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <button onClick={() => onChange(null)} style={optStyle(value === null)}>Any</button>
         {definition.options.map((opt) => (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
             title={opt.description}
-            style={optionStyle(value === opt.value, opt.value)}
+            style={optStyle(value === opt.value)}
           >
             {opt.label}
           </button>
@@ -35,18 +30,19 @@ export function CategoryFilter({ definition, value, onChange }: Props) {
   )
 }
 
-function optionStyle(active: boolean, _value: string | null): React.CSSProperties {
+function optStyle(active: boolean): React.CSSProperties {
   return {
     width: '100%',
     textAlign: 'left',
     padding: '5px 10px',
-    fontSize: '12px',
-    fontWeight: active ? 600 : 400,
-    borderRadius: '6px',
-    border: `1px solid ${active ? colors.accent.purple : colors.border.subtle}`,
-    background: active ? `${colors.accent.purple}20` : 'transparent',
-    color: active ? colors.accent.purpleLight : colors.text.secondary,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
+    fontFamily: "'Share Tech Mono', monospace",
+    fontSize: 11,
+    borderRadius: 4,
+    border: `1px solid ${active ? colors.accent.blue : colors.border.panel}`,
+    background: active ? `${colors.accent.blue}12` : 'transparent',
+    color: active ? colors.accent.blue : colors.text.muted,
+    cursor: 'crosshair',
+    transition: 'all 0.15s',
+    boxShadow: active ? `0 0 8px rgba(79,195,247,0.15)` : 'none',
   }
 }

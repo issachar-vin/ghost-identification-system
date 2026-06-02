@@ -42,7 +42,7 @@ export function GhostBackground() {
             left: g.left,
             width: g.size,
             height: g.size,
-            fill: 'rgba(57, 255, 20, 1)',
+            fill: 'rgba(68, 170, 255, 1)',
             animation: `${g.animation} ${g.duration} ${g.delay} infinite linear`,
             willChange: 'transform, opacity',
           }}
