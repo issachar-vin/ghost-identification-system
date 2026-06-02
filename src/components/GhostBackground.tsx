@@ -204,7 +204,7 @@ export function GhostBackground() {
   return (
     <div
       aria-hidden="true"
-      style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}
+      style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}
     >
       {ghosts.map((ghost) => (
         <GhostSilhouette key={ghost.id} ghost={ghost} dying={dyingIds.has(ghost.id)} />
