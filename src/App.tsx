@@ -12,6 +12,7 @@ import ghostData from './data/ghosts.json'
 import './styles/animations.css'
 
 const data = ghostData as unknown as GhostData
+const sortedGhosts = [...data.ghosts].sort((a, b) => a.name.localeCompare(b.name))
 
 type CardStatus = 'normal' | 'possible' | 'confirmed'
 
@@ -154,7 +155,7 @@ export default function App() {
                     : 'repeat(auto-fill, minmax(280px, 1fr))',
                   gap: isMobile ? 10 : 14,
                 }}>
-                  {data.ghosts.map((ghost) => {
+                  {sortedGhosts.map((ghost) => {
                     const isVisible = visibleIds.has(ghost.id)
                     return (
                       <GhostCard
