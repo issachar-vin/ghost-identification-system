@@ -157,40 +157,41 @@ export function FilterSidebar({
       </div>
 
       {/* Reset */}
-      {hasActiveFilters && (
-        <button
-          onClick={onReset}
-          style={{
-            display: 'block',
-            width: 'calc(100% - 36px)',
-            margin: '0 18px 16px',
-            padding: '8px',
-            background: 'transparent',
-            border: `1px solid ${colors.text.muted}`,
-            color: colors.text.muted,
-            fontFamily: colors.font.mono,
-            fontSize: 10,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            borderRadius: 4,
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            const b = e.currentTarget
-            b.style.borderColor = colors.accent.blue
-            b.style.color = colors.accent.blue
-            b.style.boxShadow = '0 0 10px rgba(79,195,247,0.2)'
-          }}
-          onMouseLeave={(e) => {
-            const b = e.currentTarget
-            b.style.borderColor = colors.text.muted
-            b.style.color = colors.text.muted
-            b.style.boxShadow = 'none'
-          }}
-        >
-          ⟳ Clear all filters
-        </button>
-      )}
+      <button
+        onClick={hasActiveFilters ? onReset : undefined}
+        disabled={!hasActiveFilters}
+        style={{
+          display: 'block',
+          width: 'calc(100% - 36px)',
+          margin: '0 18px 16px',
+          padding: '8px',
+          background: 'transparent',
+          border: `1px solid ${colors.text.muted}`,
+          color: colors.text.muted,
+          fontFamily: colors.font.mono,
+          fontSize: 10,
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          borderRadius: 4,
+          transition: 'all 0.2s',
+          opacity: hasActiveFilters ? 1 : 0.3,
+        }}
+        onMouseEnter={(e) => {
+          if (!hasActiveFilters) return
+          const b = e.currentTarget
+          b.style.borderColor = colors.accent.blue
+          b.style.color = colors.accent.blue
+          b.style.boxShadow = '0 0 10px rgba(79,195,247,0.2)'
+        }}
+        onMouseLeave={(e) => {
+          const b = e.currentTarget
+          b.style.borderColor = colors.text.muted
+          b.style.color = colors.text.muted
+          b.style.boxShadow = 'none'
+        }}
+      >
+        ⟳ Clear all filters
+      </button>
     </aside>
   )
 }
