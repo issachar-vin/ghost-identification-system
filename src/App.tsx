@@ -44,11 +44,13 @@ export default function App() {
 
   return (
     <>
-      {/* Full-screen background layer — visible in the margins around the shell */}
+      {/* TV static — full-screen, above everything */}
       <StaticCanvas />
-      <GhostBackground />
 
       <div className="app-shell">
+        {/* Ghost silhouettes — absolute inside shell, z-index 0, above shell bg, below all content */}
+        <GhostBackground />
+
         {/* Mobile sidebar backdrop */}
         {isMobile && sidebarOpen && (
           <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
