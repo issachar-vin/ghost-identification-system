@@ -117,29 +117,31 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Mobile filter toggle */}
-                {isMobile && (
-                  <button
-                    onClick={() => setSidebarOpen(true)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      background: activeFilterCount > 0 ? `${colors.accent.blue}15` : 'transparent',
-                      border: `1px solid ${activeFilterCount > 0 ? colors.accent.blue : colors.border.panel}`,
-                      color: activeFilterCount > 0 ? colors.accent.blue : colors.text.muted,
-                      fontFamily: colors.font.mono,
-                      fontSize: 10,
-                      letterSpacing: '0.1em',
-                      padding: '6px 12px',
-                      borderRadius: 4,
-                      flexShrink: 0,
-                      marginTop: 4,
-                    }}
-                  >
-                    ☰ Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
-                  </button>
-                )}
+                {/* Right-side header actions */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginTop: 4 }}>
+                  <KofiButton />
+                  {isMobile && (
+                    <button
+                      onClick={() => setSidebarOpen(true)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: activeFilterCount > 0 ? `${colors.accent.blue}15` : 'transparent',
+                        border: `1px solid ${activeFilterCount > 0 ? colors.accent.blue : colors.border.panel}`,
+                        color: activeFilterCount > 0 ? colors.accent.blue : colors.text.muted,
+                        fontFamily: colors.font.mono,
+                        fontSize: 10,
+                        letterSpacing: '0.1em',
+                        padding: '6px 12px',
+                        borderRadius: 4,
+                        flexShrink: 0,
+                      }}
+                    >
+                      ☰ Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -184,6 +186,71 @@ export default function App() {
         />
       </div>
     </>
+  )
+}
+
+function KofiButton() {
+  return (
+    <a
+      href="https://ko-fi.com/K4R020MUY2"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Support on Ko-fi"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 7,
+        textDecoration: 'none',
+        color: colors.accent.blue,
+        fontFamily: colors.font.mono,
+        fontSize: 10,
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        border: `1px solid rgba(79,195,247,0.25)`,
+        borderRadius: 4,
+        padding: '5px 10px 5px 7px',
+        background: 'rgba(79,195,247,0.04)',
+        flexShrink: 0,
+        transition: 'border-color 0.2s, box-shadow 0.2s',
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget
+        el.style.borderColor = colors.accent.blue
+        el.style.boxShadow = '0 0 10px rgba(79,195,247,0.2)'
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget
+        el.style.borderColor = 'rgba(79,195,247,0.25)'
+        el.style.boxShadow = 'none'
+      }}
+    >
+      {/* Ghost rising from a coffee mug */}
+      <svg
+        viewBox="0 0 36 36"
+        width="22"
+        height="22"
+        fill="currentColor"
+        style={{ display: 'block' }}
+        aria-hidden="true"
+      >
+        {/* Mug body — behind ghost */}
+        <rect x="9" y="21" width="18" height="13" rx="2" opacity="0.75" />
+        {/* Mug handle */}
+        <path
+          d="M27 24 Q33 24 33 27.5 Q33 31 27 31"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+        />
+        {/* Ghost body — rising from mug as steam */}
+        <path d="M4 14 C4 4 11 0 18 0 C25 0 32 4 32 14 Q27 34 22 14 Q17 34 12 14 Q7 34 4 14 Z" />
+        {/* Ghost eyes */}
+        <circle cx="13" cy="9" r="2.2" fill="rgba(8,12,16,0.8)" />
+        <circle cx="23" cy="9" r="2.2" fill="rgba(8,12,16,0.8)" />
+      </svg>
+      Ko-fi
+    </a>
   )
 }
 

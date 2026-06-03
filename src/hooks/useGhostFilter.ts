@@ -59,14 +59,15 @@ export function useGhostFilter(ghosts: Ghost[], interactionDefs: InteractionDefi
 
   const filteredGhosts = useMemo(() => {
     return ghosts.filter((ghost) => {
-      // Evidence filters — AND across all non-off states
+      // Evidence filters — AND across all non-off states.
+      // fakeEvidence (e.g. Mimic's Ghost Orb) counts as "shown" for both
+      // include and exclude — the ghost visibly produces it during investigation.
       for (const [evidenceId, state] of Object.entries(evidenceFilters)) {
-        if (state === 'include' && !ghost.evidence.includes(evidenceId as EvidenceId)) {
-          return false
-        }
-        if (state === 'exclude' && ghost.evidence.includes(evidenceId as EvidenceId)) {
-          return false
-        }
+        const shows =
+          ghost.evidence.includes(evidenceId as EvidenceId) ||
+          (ghost.fakeEvidence?.includes(evidenceId as EvidenceId) ?? false)
+        if (state === 'include' && !shows) return false
+        if (state === 'exclude' && shows) return false
       }
 
       // Interaction filters — AND across all non-null values
